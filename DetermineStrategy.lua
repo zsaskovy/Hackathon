@@ -5,5 +5,6 @@ local affinities = {
 }
 
 function determineStrategy(marine, affinity)
+	strategyWeights(marine)
 	return "Explorer"
 end
