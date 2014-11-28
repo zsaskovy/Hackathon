@@ -108,3 +108,29 @@ function MapTools:getNearItems(coord, maxDistance)
 	
 	return ret
 end
+
+function MapTools:getNearEnemies(coord, maxDistance)
+	local stuff = nil
+	if (maxDistance ~= nil) then
+		local range = maxDistance
+		local tx = coord.X - range
+		local ty = coord.Y - range
+		stuff = Game.Map:entities_in(tx, ty, range * 2, range * 2)
+	else
+		stuff = Game.Map:entities_in(0, 0, Game.Map.width, Game.Map.height)
+	end
+
+	local ret = {}
+	
+	local valid_types = { spawn_player = true }
+	
+	if (stuff == nil) then return ret end
+	
+	for k, v in pairs(stuff) do
+		if (valid_types[v.Type] and (v.Bounds.X ~= coord.X or v.Bounds.Y ~= coord.Y)) then
+			ret[#ret+1] = {v}
+		end
+	end
+	
+	return ret
+end
