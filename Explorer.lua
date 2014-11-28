@@ -1,16 +1,48 @@
 Explorer = class("Explorer", Strategy)
 
+function Explorer:getPowerup(c)
+	function isPickupType(t)
+		for i,validType in ipairs(MapTools.pickupTypes) do
+			if t == validType then return true end
+		end
+		return false
+	end
+	
+	local currentEntities = Game.Map:entities_at(c.X, c.Y)
+	if (currentEntities == nil) then 
+		return nil 
+	end
+	for i,e in ipairs(currentEntities) do
+		if (isPickupType(e.type)) then 
+			return e
+		end
+	end
+	return nil
+end
+
 function Explorer:nextMove(marine)
+	--pick up if we're on powerup
+	local currentEntity = Explorer:getPowerup(marine.Bounds)
+	
+	print_r(Game.Map:entities_in(marine.Bounds.X, marine.Bounds.Y,10,10))
+	if ( currentEntity ~= nil and not Strategy:recentlyVisited(marine.Bounds) ) then
+		print_r(Strategy.recentPositions)
+		Strategy.recentPositions = { marine.Bounds }
+		return { Command = "pickup" }
+	end
+	
 	local possibleCells = MapTools:getPassableCells(marine.Bounds, marine.MovePoints)
 	local possibleItems = MapTools:getNearItems(marine.Bounds, marine.MovePoints)
 	
-	print_r(possibleItems)
 	math.randomseed(12323131231212312)
 	local nextPosition = nil
+	local headToPickup = false
+	
 	if (#possibleItems > 0) then
 		local r = math.random(1, #possibleItems)
 		nextPosition = possibleItems[r][1]
 		nextPosition = coord(nextPosition.Bounds.X, nextPosition.Bounds.Y)
+		headToPickup = true
 	elseif(#possibleCells > 0) then
 		local r = math.random(1, #possibleCells)
 		nextPosition = possibleCells[r]
@@ -18,10 +50,10 @@ function Explorer:nextMove(marine)
 		return { Command = "done" }
 	end
 	
-	print("")
+	--[[print("")
 	print("Next position:")
 	print_r(nextPosition)
-	print(" ")
+	print(" ")]]--
 	
 	local path = Game.Map:get_move_path(marine.Id, nextPosition.X, nextPosition.Y)
 	return {
@@ -30,43 +62,3 @@ function Explorer:nextMove(marine)
 	}
 
 end
-
---[[Explorer = class( "Explorer", DeathMatchMarine )
-
-function Explorer:select_mode()
-	return "advance"
-end
-
-function Explorer:provide_steps(prev)
-	local marine,err = Game.Map:get_entity("marine-1")
-	
-	local direction = MapTools.top
-	local newDirection = MapTools.top
-	
-	--where to move
-	function tryMove()
-		local nextCoord = MapTools:addCoordinate(marine.Bounds, MapTools:turnDirection(direction, newDirection))
-		local tmpCoord = MapTools:turnDirection(direction, newDirection)
-		print("nextcoord " .. tmpCoord.X .. tmpCoord.Y)
-		return MapTools:isPassable(nextCoord)
-	end
-	
-	while not tryMove() do
-		newDirection = MapTools:nextDirection(direction)
-		print ("attempt direction" .. direction.X .. direction.Y)
-		
-	end
-	
-	newOffset = {X = marine.Bounds.X + newDirection.X, Y = marine.Bounds.Y + newDirection.Y}
-	
-  return { 
-    { 
-      Command = "move", 
-      Path = { 
-          newOffset
-        } 
-    },
-    { Command = "done" } 
-  }
-end
-]]--
