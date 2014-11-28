@@ -21,13 +21,6 @@ function MapTools:nextDirection(dir)
 	end
 end
 
-function invert(dir)
-	return coord(dir.Y, dir.X)
-end
-function minus(dir)
-	return coord(-1*dir.X, -1*dir.Y)
-end
-
 function MapTools:getCell(c)
 	local cell, zone = Game.Map:cell(c.X, c.Y)
 	return cell
@@ -55,4 +48,37 @@ function MapTools:getPassableCells(coord, maxDistance)
 			end
 		end
 	end
+end
+
+function getNearItems(coord, maxDistance)
+	local range = maxDistance
+	local tx = coord.X - range
+	local ty = coord.Y - range
+	local stuff = Game.Map:entities_in(tx, ty, range * 2, range * 2)
+
+	local ret = {}
+	
+	local valid_types = {
+		ammo_bullet = true, 
+		ammo_rocket = true, 
+		ammo_cell = true, 
+		env_heal = true, 
+		i_medkit = true,
+		w_shotgun = true, 
+		w_chaingun = true, 
+		w_rocket_launcher = true, 
+		w_chainsaw = true, 
+		w_plasma = true, 
+		w_bfg = true, 
+		w_machinegun = true, 
+		w_grenade = true
+	}
+	
+	for k, v in pairs(stuff) do
+		if (valid_types[v.Type]) then
+			ret[#ret+1] = {v}
+		end
+	end
+	
+	return ret
 end
