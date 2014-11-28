@@ -8,7 +8,7 @@ end
 
 function Marvin:provide_steps(prev)
 	if (prev) then return nil end
-	local marine,err = Game.Map:get_entity("marine-1")
+	local marine,err = Game.Map:get_entity(self.marine_id)
 
 	local strategy = determineStrategy(marine, affinity)
 	local command = {}
