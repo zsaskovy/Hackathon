@@ -30,15 +30,15 @@ function MapTools:turnDirection(dir, turnDir)
 		return coord(-1*dir.X, -1*dir.Y)
 	end
 	
-	if turnDir == top then 
+	if turnDir.X == self.top.X and turnDir.Y == self.top.Y then 
 		return dir
-	elseif turnDir == bottom then
+	elseif turnDir.X == self.bottom.X and turnDir.Y == self.bottom.Y then
 		return minus(dir)
-	elseif turnDir == left then
+	elseif turnDir.X == self.left.X and turnDir.Y == self.left.Y then
 		if dir.X == 0 then return minus(invert(dir))
 		else return invert(dir)
 		end
-	elseif turnDir == right then
+	else
 		if (dir.X == 0) then return invert(dir)
 		else return minus(invert(dir))
 		end
@@ -55,8 +55,9 @@ function getZone(c)
 	return zone
 end
 	
-function isPassable(c)
-	return getCell(c) > Map.Impassable
+function MapTools:isPassable(c)
+	print("getcell " .. c.X .. " " .. c.Y)
+	return getCell(c) > 127
 end
 
 function getMyLocation(marine)
