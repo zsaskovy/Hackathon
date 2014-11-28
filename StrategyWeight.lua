@@ -1,3 +1,0 @@
-function weights()
-    
-end
