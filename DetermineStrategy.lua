@@ -4,6 +4,6 @@ local affinities = {
 	Camper     = { Explorer = 1, Aggressive = 1, Camper = 10 }
 }
 
-function determineStrategy(marine, affinity) {
-
-}
+function determineStrategy(marine, affinity)
+	return "Explorer"
+end
