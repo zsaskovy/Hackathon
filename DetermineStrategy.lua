@@ -14,7 +14,6 @@ function determineStrategy(marine, affinity)
 	end
 	
 	for strategy, point in pairs(points) do
-		print(strategy .. " -> " .. point)
 		if (point > max) then
 			max = point
 			choosenStrategy = strategy

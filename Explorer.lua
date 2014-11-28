@@ -4,10 +4,10 @@ function Explorer:nextMove(marine)
 	local possibleCells = MapTools:getPassableCells(marine.Bounds, 4)
 	local possibleItems = MapTools:getNearItems(marine.Bounds, 4)
 	
-	print("Possible cells")
-	print_r(possibleCells)
-	print("Possible items")
-	print_r(possibleItems)
+	--print("Possible cells")
+	--print_r(possibleCells)
+	--print("Possible items")
+	--print_r(possibleItems)
 	math.randomseed(12323131231212312)
 	local nextPosition = nil
 	if (#possibleItems > 0) then
@@ -16,10 +16,12 @@ function Explorer:nextMove(marine)
 		nextPosition = possibleCells[math.random(1, #possibleCells)]
 	end
 	
-	print("Next position")
-	print_r(nextPosition)
-	print("getmovePath " .. nextPosition.X .. " " .. nextPosition.Y)
-	if (nextPosition == nil) then
+	--print("Next position")
+	--print_r(nextPosition)
+	--print("getmovePath " .. nextPosition.X .. " " .. nextPosition.Y)
+	print(marine.MovePoints .. " -> " .. marine.MoveCount)
+	if (marine.MovePoints == 0 or nextPosition == nil) then
+		print("Move points -> done")
 		return { Command = "done" }
 	else
 		return {
