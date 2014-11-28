@@ -10,22 +10,20 @@ function MapTools:addCoordinate(op1, op2)
 	return r
 end
 	
-function getCell(c)
+function MapTools:getCell(c)
 	local cell, zone = Game.Map:cell(c.X, c.Y)
 	return cell
 end
 	
-function getZone(c)
+function MapTools:getZone(c)
 	local cell, zone = Game.Map:cell(c.X, c.Y)
 	return zone
 end
 	
-function isPassable(c)
+function MapTools:isPassable(c)
 	return getCell(c) > Map.Impassable
 end
 
-function getMyLocation(marine)
-	local marine,err = Game.Map:get_entity(marine)
-	
+function MapTools:getMyLocation(marine)
 	return marine.Bounds
 end

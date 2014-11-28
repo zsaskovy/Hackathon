@@ -9,10 +9,12 @@ end
 function Marvin:provide_steps(prev)
 	local marine,err = Game.Map:get_entity("marine-1")
 
-	local command = Strategy:strategy(marine)
+	--local command = Strategy:strategy(marine)
+	local c = MapTools:getMyLocation(marine)
+	getNearItems(c)
 
 	return { 
-		command,
+--		command,
 		{ Command = "done" } 
 	}
 end
