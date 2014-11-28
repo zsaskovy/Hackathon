@@ -64,3 +64,14 @@ end
 function MapTools:getMyLocation(marine)
 	return marine.Bounds
 end
+
+function MapTools:getPassableCells(coord, maxDistance)
+	local res = {}
+	for i= coord.X - maxDistance, coord.X + maxDistance, 1 do
+		for j = coord.Y - maxDistance, coord.Y + maxDistance, 1 do
+			if maxDistance <= (abs(coord.X - i) + abs(coord.Y - j)) and isPassable(coord(i,j)) then
+				res[#res+1]=coord(i,j)
+			end
+		end
+	end
+end
