@@ -3,7 +3,7 @@ function strategy(marine)
 	
 	if (getNearEnemies(l) ~= nil) then
 		local enemies = getNearEnemies(l)
-		if (canAttack()) then
+		if (canAttack(marine)) then
 			attack(enemies)
 		else
 			escape(enemies)
@@ -32,7 +32,8 @@ end
 function getNearItems(nearItems)
 end
 
-function canAttack()
+function canAttack(marine)
+	return (marine.AttackPoints > 0 and not lowAmmo(marine))
 end
 
 function attack(enemies)
@@ -59,7 +60,4 @@ function hasAmmo(nearItems)
 end
 
 function moveAlong(location)
-end
-
-local function getMyLocation()
 end
