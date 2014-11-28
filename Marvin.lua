@@ -25,8 +25,8 @@ function Marvin:provide_steps(prev)
 
 	print_r(command)
 	return { 
-		command,
-		{ Command = "done" } 
+		command
+		--,{ Command = "done" } 
 	}
 end
 
