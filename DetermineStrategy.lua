@@ -5,5 +5,21 @@ local affinities = {
 }
 
 function determineStrategy(marine, affinity)
-	return "Explorer"
+	local points = strategyWeights(marine)
+	local max = points["Explorer"]
+	local choosenStrategy = "Explorer"
+	
+	for strategy, point in pairs(points) do
+		points[strategy] = points[strategy] * affinities[affinity][strategy]
+	end
+	
+	for strategy, point in pairs(points) do
+		print(strategy .. " -> " .. point)
+		if (point > max) then
+			max = point
+			choosenStrategy = strategy
+		end
+	end
+	
+	return choosenStrategy
 end
