@@ -1,34 +1,34 @@
 Explorer = class("Explorer", Strategy)
 
 function Explorer:nextMove(marine)
-	local possibleCells = MapTools:getPassableCells(marine.Bounds, 4)
-	local possibleItems = MapTools:getNearItems(marine.Bounds, 4)
+	local possibleCells = MapTools:getPassableCells(marine.Bounds, marine.MovePoints)
+	local possibleItems = MapTools:getNearItems(marine.Bounds, marine.MovePoints)
 	
-	--print("Possible cells")
-	--print_r(possibleCells)
-	--print("Possible items")
-	--print_r(possibleItems)
+	print_r(possibleItems)
 	math.randomseed(12323131231212312)
 	local nextPosition = nil
 	if (#possibleItems > 0) then
-		nextPosition = possibleItems[math.random(1, #possibleItems)]
+		local r = math.random(1, #possibleItems)
+		nextPosition = possibleItems[r][1]
+		nextPosition = coord(nextPosition.Bounds.X, nextPosition.Bounds.Y)
 	elseif(#possibleCells > 0) then
-		nextPosition = possibleCells[math.random(1, #possibleCells)]
+		local r = math.random(1, #possibleCells)
+		nextPosition = possibleCells[r]
+	else
+		return { Command = "done" }
 	end
 	
-	--print("Next position")
-	--print_r(nextPosition)
-	--print("getmovePath " .. nextPosition.X .. " " .. nextPosition.Y)
-	print(marine.MovePoints .. " -> " .. marine.MoveCount)
-	if (marine.MovePoints == 0 or nextPosition == nil) then
-		print("Move points -> done")
-		return { Command = "done" }
-	else
-		return {
-			Command= "move",
-			Path= Game.Map:get_move_path(marine.Id, nextPosition.X, nextPosition.Y)
-		}
-	end
+	print("")
+	print("Next position:")
+	print_r(nextPosition)
+	print(" ")
+	
+	local path = Game.Map:get_move_path(marine.Id, nextPosition.X, nextPosition.Y)
+	return {
+		Command= "move",
+		Path= path
+	}
+
 end
 
 --[[Explorer = class( "Explorer", DeathMatchMarine )

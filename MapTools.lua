@@ -85,7 +85,7 @@ function MapTools:getNearItems(coord, maxDistance)
 	}
 	
 	for k, v in pairs(stuff) do
-		if (valid_types[v.Type]) then
+		if (valid_types[v.Type] and (v.Bounds.X ~= coord.X or v.Bounds.Y ~= coord.Y)) then
 			ret[#ret+1] = {v}
 		end
 	end
