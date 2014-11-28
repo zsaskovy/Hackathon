@@ -24,5 +24,5 @@ function strategyWeights(marine)
 	end
 
 	print_r(values)
-    return weights
+    return values
 end
