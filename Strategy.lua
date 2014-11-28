@@ -35,36 +35,36 @@ end
 function getNearEnemies(c)
 end
 
-function getNearItems(marine)
-	local range = marine.MovePoints
-	local tx = marine.Bounds.X - range
-	local ty = marine.Bounds.Y - range
-	local stuff = Game.Map:entities_in(tx, ty, range * 2, range * 2)
+	function getNearItems(marine)
+		local range = marine.MovePoints
+		local tx = marine.Bounds.X - range
+		local ty = marine.Bounds.Y - range
+		local stuff = Game.Map:entities_in(tx, ty, range * 2, range * 2)
 
-	local valid_types = {
-		ammo_bullet = true, 
-		ammo_rocket = true, 
-		ammo_cell = true, 
-		env_heal = true, 
-		i_medkit = true,
-		w_shotgun = true, 
-		w_chaingun = true, 
-		w_rocket_launcher = true, 
-		w_chainsaw = true, 
-		w_plasma = true, 
-		w_bfg = true, 
-		w_machinegun = true, 
-		w_grenade = true
-	}
-	
-	print_r(valid_types)
-	
-	for k, v in pairs(stuff) do
-		if (valid_types[v.Type]) then
-			print(v.Type)
+		local valid_types = {
+			ammo_bullet = true, 
+			ammo_rocket = true, 
+			ammo_cell = true, 
+			env_heal = true, 
+			i_medkit = true,
+			w_shotgun = true, 
+			w_chaingun = true, 
+			w_rocket_launcher = true, 
+			w_chainsaw = true, 
+			w_plasma = true, 
+			w_bfg = true, 
+			w_machinegun = true, 
+			w_grenade = true
+		}
+		
+		print_r(valid_types)
+		
+		for k, v in pairs(stuff) do
+			if (valid_types[v.Type]) then
+				print(v.Type)
+			end
 		end
 	end
-end
 
 function canAttack(marine)
 	return (marine.AttackPoints > 0 and not lowAmmo(marine))
