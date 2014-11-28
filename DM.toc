@@ -3,4 +3,5 @@ helper.lua
 Marvin.lua
 Explorer.lua
 Entry.lua
+Strategy.lua
 helper.lua
