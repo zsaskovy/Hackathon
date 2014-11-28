@@ -1,9 +1,11 @@
 MapTools.lua
 helper.lua
 Marvin.lua
-Explorer.lua
 Entry.lua
-Strategy.lua
-helper.lua
-StrategyWeight.lua
 DetermineStrategy.lua
+StrategyWeight.lua
+Strategy.lua
+Aggressive.lua
+Camper.lua
+Explorer.lua
+helper.lua
