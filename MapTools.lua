@@ -32,23 +32,22 @@ function minus(dir)
 	return coord(-1*dir.X, -1*dir.Y)
 end
 
-function MapTools:getCell(c)
-	if turnDir == top then 
+	if turnDir.X == self.top.X and turnDir.Y == self.top.Y then 
 		return dir
-	elseif turnDir == bottom then
+	elseif turnDir.X == self.bottom.X and turnDir.Y == self.bottom.Y then
 		return minus(dir)
-	elseif turnDir == left then
+	elseif turnDir.X == self.left.X and turnDir.Y == self.left.Y then
 		if dir.X == 0 then return minus(invert(dir))
 		else return invert(dir)
 		end
-	elseif turnDir == right then
+	else
 		if (dir.X == 0) then return invert(dir)
 		else return minus(invert(dir))
 		end
 	end
 end
 
-function getCell(c)
+function MapTools:getCell(c)
 	local cell, zone = Game.Map:cell(c.X, c.Y)
 	return cell
 end
