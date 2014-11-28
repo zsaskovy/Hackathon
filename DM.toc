@@ -5,3 +5,4 @@ Explorer.lua
 Entry.lua
 Strategy.lua
 helper.lua
+StrategyWeight.lua
