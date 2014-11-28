@@ -21,8 +21,13 @@ function MapTools:nextDirection(dir)
 	end
 end
 
+function MapTools:hasCell(c)
+	return (c.X >= 0 and c.Y >= 0 and c.X < Game.Map.height and c.Y < Game.Map.width)
+end
+
 function MapTools:getCell(c)
-	local cell, zone = Game.Map:cell(c.X, c.Y)
+	print("getting cell " .. c.X .. " " .. c.Y)
+	cell, zone = Game.Map:cell(c.X, c.Y)
 	return cell
 end
 	
@@ -32,18 +37,23 @@ function MapTools:getZone(c)
 end
 	
 function MapTools:isPassable(c)
-	return getCell(c) > Map.Impassable
+	local possibleCell = MapTools:getCell(c)
+	if (not (possibleCell == nil)) then
+		return possibleCell > 127
+	else
+		return false
+	end
 end
 
 function MapTools:getMyLocation(marine)
 	return marine.Bounds
 end
 
-function MapTools:getPassableCells(coord, maxDistance)
+function MapTools:getPassableCells(c, maxDistance)
 	local res = {}
-	for i= coord.X - maxDistance, coord.X + maxDistance, 1 do
-		for j = coord.Y - maxDistance, coord.Y + maxDistance, 1 do
-			if maxDistance <= (abs(coord.X - i) + abs(coord.Y - j)) and isPassable(coord(i,j)) then
+	for i= c.X - maxDistance, c.X + maxDistance, 1 do
+		for j = c.Y - maxDistance, c.Y + maxDistance, 1 do
+			if maxDistance <= (math.abs(c.X - i) + math.abs(c.Y - j)) and MapTools:isPassable(coord(i,j)) then
 				res[#res+1]=coord(i,j)
 			end
 		end
