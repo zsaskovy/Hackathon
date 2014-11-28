@@ -1,7 +1,7 @@
 Explorer = class("Explorer", "Strategy")
 
-function Explorer:nextMove()
-	
+function Explorer:nextMove(marine)
+	local possibleCells = MapTools.getPassableCells()
 	
 end
 
