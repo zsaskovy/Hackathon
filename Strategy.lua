@@ -1,20 +1,20 @@
-function strategy() 
-	local l = MapTools:getMyLocation()
+function strategy(bot) 
+	local l = MapTools:getMyLocation(bot)
 	
-	if (getNearEnemies(l) not nil) then
+	if (getNearEnemies(l) ~= nil) then
 		local enemies = getNearEnemies(l)
 		if (canAttack()) then
 			attack(enemies)
 		else
 			escape(enemies)
 		end
-	elseif (getNearItems(l) not nil) then
+	elseif (getNearItems(l) ~= nil) then
 		local nearItems = getNearItems(l)
 		
-		if (lowHealth() and hasHealing(nearItems))
+		if (lowHealth() and hasHealing(nearItems)) then
 			item = getHealing(nearItems)
 			moveTo(nearItems.location)
-		elseif (lowAmmo() and hasAmmo(nearItems))
+		elseif (lowAmmo() and hasAmmo(nearItems)) then
 			item = getAmmo(nearItems)
 			moveTo(nearItems.location)
 		else 

@@ -24,5 +24,8 @@ function isPassable(c)
 	return getCell(c) > Map.Impassable
 end
 
-function getMyLocation()
+function getMyLocation(bot)
+	local marine,err = Game.Map:get_entity(bot)
+	
+	return marine.Bounds
 end
