@@ -60,7 +60,7 @@ function MapTools:getPassableCells(c, maxDistance)
 	end
 end
 
-function getNearItems(coord, maxDistance)
+function MapTools:getNearItems(coord, maxDistance)
 	local range = maxDistance
 	local tx = coord.X - range
 	local ty = coord.Y - range
