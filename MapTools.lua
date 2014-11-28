@@ -8,6 +8,22 @@ MapTools.static.directions = { left, top, right, bottom }
 MapTools.static.up = coord(0,-1)
 MapTools.static.down = coord(0,1)
 
+MapTools.static.pickupTypes = {
+		ammo_bullet, 
+		ammo_rocket, 
+		ammo_cell, 
+		env_heal, 
+		i_medkit,
+		w_shotgun, 
+		w_chaingun, 
+		w_rocket_launcher, 
+		w_chainsaw, 
+		w_plasma, 
+		w_bfg, 
+		w_machinegun, 
+		w_grenade
+	}
+	
 function MapTools:addCoordinate(op1, op2)
 	local r = coord(op1.X+op2.X, op1.Y+op2.Y)
 	return r
