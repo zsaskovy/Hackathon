@@ -19,7 +19,9 @@ function strategyWeights(marine)
 					marine_value = 0
 				end
 			end
-			values[w_key] = values[w_key] + (value * marine_value)
+			if (marine_value ~= nil) then 
+				values[w_key] = values[w_key] + (value * marine_value)
+			end
 		end
 	end
 
