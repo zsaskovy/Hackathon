@@ -2,7 +2,17 @@ Explorer = class("Explorer", "Strategy")
 
 function Explorer:nextMove(marine)
 	local possibleCells = MapTools.getPassableCells()
+	local possibleItems = MapTools.getNearItems(marine.Bounds, 4)
 	
+	math.randomseed(12323131231212312)
+	local nextPosition = {}
+	if (#possibleItems > 0) then
+		nextPosition = possibleItems[math.random(1, #possibleItems)]
+	else
+		nextPosition = possibleCells[math.random(1, #possibleCells)]
+	end
+	
+	return Game.Map:get_move_path(marine.Id, nextPosition.X, nextPosition.Y)
 end
 
 --[[Explorer = class( "Explorer", DeathMatchMarine )
