@@ -1,5 +1,5 @@
-function strategy(bot) 
-	local l = MapTools:getMyLocation(bot)
+function strategy(marine) 
+	local l = MapTools:getMyLocation(marine)
 	
 	if (getNearEnemies(l) ~= nil) then
 		local enemies = getNearEnemies(l)
@@ -11,10 +11,10 @@ function strategy(bot)
 	elseif (getNearItems(l) ~= nil) then
 		local nearItems = getNearItems(l)
 		
-		if (lowHealth() and hasHealing(nearItems)) then
+		if (lowHealth(marine) and hasHealing(nearItems)) then
 			item = getHealing(nearItems)
 			moveTo(nearItems.location)
-		elseif (lowAmmo() and hasAmmo(nearItems)) then
+		elseif (lowAmmo(marine) and hasAmmo(nearItems)) then
 			item = getAmmo(nearItems)
 			moveTo(nearItems.location)
 		else 
@@ -41,16 +41,21 @@ end
 function escape(enemies)
 end
 
-function lowHealth()
+function lowHealth(marine)
+    local healt_threshold = 5
+    return marine.Health < healt_threshold
 end
 
 function hasHealing(nearItems)
 end
 
-function lowAmmo()
+function lowAmmo(marine)
+    local ammo_threshold = 0
+    return marine.AttackPoints > ammo_threshold
 end
 
 function hasAmmo(nearItems)
+    
 end
 
 function moveAlong(location)
