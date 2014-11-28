@@ -8,8 +8,11 @@ end
 
 function Marvin:provide_steps(prev)
 	if (prev) then return nil end
+	
 	local marine,err = Game.Map:get_entity("marine-1")
-
+	
+	print("I'm at: " .. marine.Bounds.X .. ", " .. marine.Bounds.Y)
+	
 	local strategy = determineStrategy(marine, affinity)
 	local command = {}
 	
@@ -23,7 +26,7 @@ function Marvin:provide_steps(prev)
 		command = Camper:nextMove(marine)
 	end
 
-	print_r(command)
+	--print_r(command)
 	return { 
 		command
 		--,{ Command = "done" } 

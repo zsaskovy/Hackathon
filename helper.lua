@@ -1,8 +1,13 @@
 function print_r (tbl, indent)
   if not indent then indent = 0 end
-  if tbl == nil then
-	print "NIL"
+  if (tbl == nil) then
+	print("NIL")
 	return
+  end
+  
+  if (#tbl == 0) then
+  	print("EMPTY")
+--  	return
   end
   for k, v in pairs(tbl) do
     formatting = string.rep("  ", indent) .. k .. ": "
