@@ -1,4 +1,10 @@
-function strategy(marine) 
+Strategy = class("Strategy")
+
+function Strategy:nextMove()
+	return { Command = "done" }
+end
+
+--[[function strategy(marine) 
 	local l = MapTools:getMyLocation(marine)
 	
 	if (getNearEnemies(l) ~= nil) then
@@ -88,4 +94,4 @@ function hasAmmo(nearItems)
 end
 
 function moveAlong(location)
-end
+end]]--
