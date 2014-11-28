@@ -7,6 +7,7 @@ function Marvin:select_mode()
 end
 
 function Marvin:provide_steps(prev)
+	if (prev) then return nil end
 	local marine,err = Game.Map:get_entity("marine-1")
 
 	local strategy = determineStrategy(marine, affinity)
@@ -22,6 +23,7 @@ function Marvin:provide_steps(prev)
 		command = Camper:nextMove(marine)
 	end
 
+	print_r(command)
 	return { 
 		command,
 		{ Command = "done" } 
