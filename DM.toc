@@ -3,7 +3,7 @@ helper.lua
 Marvin.lua
 Entry.lua
 DetermineStrategy.lua
-StrategyWeight.lua
+StrategyWeights.lua
 Strategy.lua
 Aggressive.lua
 Camper.lua
