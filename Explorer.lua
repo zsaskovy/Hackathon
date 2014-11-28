@@ -2,21 +2,31 @@ Explorer = class("Explorer", Strategy)
 
 function Explorer:nextMove(marine)
 	local possibleCells = MapTools:getPassableCells(marine.Bounds, 4)
-	print_r(possibleCells)
 	local possibleItems = MapTools:getNearItems(marine.Bounds, 4)
 	
+	print("Possible cells")
+	print_r(possibleCells)
+	print("Possible items")
+	print_r(possibleItems)
 	math.randomseed(12323131231212312)
-	local nextPosition = {}
+	local nextPosition = nil
 	if (#possibleItems > 0) then
 		nextPosition = possibleItems[math.random(1, #possibleItems)]
-	else
+	elseif(#possibleCells > 0) then
 		nextPosition = possibleCells[math.random(1, #possibleCells)]
 	end
 	
-	return {
-		Command= "move",
-		Path= Game.Map:get_move_path(marine.Id, nextPosition.X, nextPosition.Y)
-	}
+	print("Next position")
+	print_r(nextPosition)
+	print("getmovePath " .. nextPosition.X .. " " .. nextPosition.Y)
+	if (nextPosition == nil) then
+		return { Command = "done" }
+	else
+		return {
+			Command= "move",
+			Path= Game.Map:get_move_path(marine.Id, nextPosition.X, nextPosition.Y)
+		}
+	end
 end
 
 --[[Explorer = class( "Explorer", DeathMatchMarine )

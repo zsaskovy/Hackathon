@@ -4,6 +4,7 @@ function Strategy:nextMove(marine)
 	return { Command = "done" }
 end
 
+
 --[[function strategy(marine) 
 	local l = MapTools:getMyLocation(marine)
 	
