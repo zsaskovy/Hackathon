@@ -1,6 +1,6 @@
 Marvin = class( "Marvin", DeathMatchMarine )
 
-local baseStrategy = "Explorer"
+local affinity = "Explorer"
 
 function Marvin:select_mode()
 	return "advance"
@@ -9,7 +9,7 @@ end
 function Marvin:provide_steps(prev)
 	local marine,err = Game.Map:get_entity("marine-1")
 
-	local strategy = determineStrategy(marine, baseStrategy)
+	local strategy = determineStrategy(marine, affinity)
 	local command = {}
 	
 	if (strategy == "Explorer") then

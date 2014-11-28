@@ -1,4 +1,11 @@
-Explorer = class( "Explorer", DeathMatchMarine )
+Explorer = class("Explorer", "Strategy")
+
+function Explorer:nextMove()
+	
+	
+end
+
+--[[Explorer = class( "Explorer", DeathMatchMarine )
 
 function Explorer:select_mode()
 	return "advance"
@@ -36,3 +43,4 @@ function Explorer:provide_steps(prev)
     { Command = "done" } 
   }
 end
+]]--
