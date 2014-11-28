@@ -23,13 +23,15 @@ end
 
 --apply a turn direction to a direction. returns an offset
 function MapTools:turnDirection(dir, turnDir)
-	function invert(dir)
-		return coord(dir.Y, dir.X)
-	end
-	function minus(dir)
-		return coord(-1*dir.X, -1*dir.Y)
-	end
-	
+end
+
+function invert(dir)
+	return coord(dir.Y, dir.X)
+end
+function minus(dir)
+	return coord(-1*dir.X, -1*dir.Y)
+end
+
 function MapTools:getCell(c)
 	if turnDir == top then 
 		return dir
