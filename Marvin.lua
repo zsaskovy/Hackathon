@@ -23,8 +23,8 @@ function Marvin:provide_steps(prev)
 	end
 
 	return { 
-		command,
-		{ Command = "done" } 
+		command
+		--,{ Command = "done" } 
 	}
 end
 
