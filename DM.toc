@@ -1,4 +1,5 @@
 MapTools.lua
+helper.lua
 Marvin.lua
 Explorer.lua
 Entry.lua

@@ -10,16 +10,16 @@ function MapTools:addCoordinate(op1, op2)
 	return r
 end
 	
-function getCell(coord)
-	local cell, zone = coord(coord.X, coord.Y)
+function getCell(c)
+	local cell, zone = Game.Map.Cell(c.X, c.Y)
 	return cell
 end
 	
-function getZone(coord)
-	local cell, zone = coord(coord.X, coord.Y)
+function getZone(c)
+	local cell, zone = Game.Map.Cell(c.X, c.Y)
 	return zone
 end
 	
-function isPassable(coord)
-	return getCell(coord) > Map.Impassable
+function isPassable(c)
+	return getCell(c) > Map.Impassable
 end
