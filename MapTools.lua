@@ -21,30 +21,11 @@ function MapTools:nextDirection(dir)
 	end
 end
 
---apply a turn direction to a direction. returns an offset
-function MapTools:turnDirection(dir, turnDir)
-end
-
 function invert(dir)
 	return coord(dir.Y, dir.X)
 end
 function minus(dir)
 	return coord(-1*dir.X, -1*dir.Y)
-end
-
-	if turnDir.X == self.top.X and turnDir.Y == self.top.Y then 
-		return dir
-	elseif turnDir.X == self.bottom.X and turnDir.Y == self.bottom.Y then
-		return minus(dir)
-	elseif turnDir.X == self.left.X and turnDir.Y == self.left.Y then
-		if dir.X == 0 then return minus(invert(dir))
-		else return invert(dir)
-		end
-	else
-		if (dir.X == 0) then return invert(dir)
-		else return minus(invert(dir))
-		end
-	end
 end
 
 function MapTools:getCell(c)
