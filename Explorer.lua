@@ -7,22 +7,30 @@ end
 function Explorer:provide_steps(prev)
 	local marine,err = Game.Map:get_entity("marine-1")
 	
-	--where to move
-	local newCoordinates = {}
-	for dir in {MapTools.left, MapTools.bottom, MapTools.right, MapTools.left} do
-		local potentialCoord = MapTools.addCoordinate( marine.Bounds, dir)
-		if (MapTools.isPassable(potentialCoord)) then
-			newCoordinates[#newCoordinates+1] = newCoordinate
-		end
-	end	
+	local direction = MapTools.top
+	local newDirection = MapTools.top
 	
-	print("aaaaa" .. newCoordinates[0] .. newCoordinates[1])
+	--where to move
+	function tryMove()
+		local nextCoord = MapTools:addCoordinate(marine.Bounds, MapTools:turnDirection(direction, newDirection))
+		local tmpCoord = MapTools:turnDirection(direction, newDirection)
+		print("nextcoord " .. tmpCoord.X .. tmpCoord.Y)
+		return MapTools:isPassable(nextCoord)
+	end
+	
+	while not tryMove() do
+		newDirection = MapTools:nextDirection(direction)
+		print ("attempt direction" .. direction.X .. direction.Y)
+		
+	end
+	
+	newOffset = {X = marine.Bounds.X + newDirection.X, Y = marine.Bounds.Y + newDirection.Y}
 	
   return { 
     { 
       Command = "move", 
       Path = { 
-          newCoordinates[1]
+          newOffset
         } 
     },
     { Command = "done" } 
