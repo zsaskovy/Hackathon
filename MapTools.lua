@@ -22,11 +22,10 @@ function MapTools:nextDirection(dir)
 end
 
 function MapTools:hasCell(c)
-	return (c.X >= 0 and c.Y >= 0 and c.X < Game.Map.height and c.Y < Game.Map.width)
+	return not (Game.Map:cell(c.X, c.Y) == nil)
 end
 
 function MapTools:getCell(c)
-	print("getting cell " .. c.X .. " " .. c.Y)
 	cell, zone = Game.Map:cell(c.X, c.Y)
 	return cell
 end
@@ -58,6 +57,7 @@ function MapTools:getPassableCells(c, maxDistance)
 			end
 		end
 	end
+	return res
 end
 
 function MapTools:getNearItems(coord, maxDistance)
