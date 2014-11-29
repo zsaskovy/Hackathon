@@ -1,8 +1,8 @@
 function strategyWeights(marine)
     local weights = {
-        Explorer =  { HasWeapon = 1, EnemyNear = 1, Health=0.9 ,Armor=0.1, CanDodge=0.0, Invisible=0.0, Wounds=0.1, AttackPoints=0.1, Accuracy=0.0, Deadly=0.0, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.0, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 },
-        Camper =    { HasWeapon = 1, EnemyNear = 1, Health=0.0, Armor=0.0, CanDodge=0.0, Invisible=0.0, Wounds=0.0, AttackPoints=0.0, Accuracy=0.0, Deadly=0.0, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.0, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 },
-        Aggressive ={ HasWeapon = 5, EnemyNear = 5, Health=0.1, Armor=0.9, CanDodge=0.0, Invisible=3.0, Wounds=0.1, AttackPoints=0.9, Accuracy=0.0, Deadly=0.9, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.9, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 }
+        Explorer =  { HasWeapon = 0.8, EnemyNear = 1, Health=0.7 ,Armor=0.1, CanDodge=0.0, Invisible=0.0, Wounds=0.1, AttackPoints=0.1, Accuracy=0.0, Deadly=0.0, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.0, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 },
+        Camper =    { HasWeapon = 0.8, EnemyNear = 1, Health=0.0, Armor=0.0, CanDodge=0.0, Invisible=0.0, Wounds=0.0, AttackPoints=0.0, Accuracy=0.0, Deadly=0.0, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.0, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 },
+        Aggressive ={ HasWeapon = 0.8, EnemyNear = 1, Health=0.1, Armor=0.9, CanDodge=0.0, Invisible=3.0, Wounds=0.1, AttackPoints=0.9, Accuracy=0.0, Deadly=0.9, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.9, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 }
     }
     
     local values = { Explorer = 0.0, Camper = 0.0, Aggressive = 0.0 }
@@ -12,11 +12,13 @@ function strategyWeights(marine)
 			local marine_value = 0
 			
 			if (key == "HasWeapon") then
-				marine_value = 2
-			elseif (key ~= "EnemyNear") then
-				local nearEnemies = MapTools:getNearEnemies(marine.Bounds, 4)
+				marine_value = weaponStrength(marine)
+			elseif (key == "EnemyNear") then
+				local nearEnemies = MapTools:getNearEnemies(marine.Bounds, 6)
 
 				if (#nearEnemies > 0) then
+					marine_value = 1
+				else
 					marine_value = 1
 				end
 
@@ -31,10 +33,34 @@ function strategyWeights(marine)
 			end
 
 			if (marine_value ~= nil) then 
+				print(w_key .. "/" .. key .. " -> " .. (value * marine_value))
 				values[w_key] = values[w_key] + (value * marine_value)
 			end
 		end
 	end
 
     return values
+end
+
+function weaponStrength(marine) 
+	local weapons = {
+		w_pistol = 1,
+		w_shotgun = 2, 
+		w_chaingun = 3, 
+		w_rocket_launcher = 6, 
+		w_chainsaw = 2, 
+		w_plasma = 6, 
+		w_bfg = 6, 
+		w_machinegun = 5, 
+		w_grenade = 4
+	}
+	local max = 0
+	
+	for weapon, strength in pairs(weapons) do
+		if (marine.Inventory[weapon] ~= nil and marine.Inventory[weapon] > max) then
+			max = marine.Inventory[weapon]
+		end
+	end
+	
+	return max
 end

@@ -45,7 +45,7 @@ end
 
 --matches all health types
 function isTypeHealth(t)
-	return (string.match(t, "medikit") or string.match(t, "health"))
+	return (string.match(t, "medikit") or string.match(t, "heal"))
 end
 
 --matches all goodie types except keys

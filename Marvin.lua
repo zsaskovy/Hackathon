@@ -1,12 +1,13 @@
 Marvin = class( "Marvin", DeathMatchMarine )
 
 Marvin.weapons = {}
+Marvin.mode = "advance"
 local affinity = "Explorer"
 
 math.randomseed(12323132231212312)
 
 function Marvin:select_mode()
-	return "advance"
+	return Marvin.mode
 end
 
 function Marvin:provide_steps(prev)
@@ -18,13 +19,20 @@ function Marvin:provide_steps(prev)
 	local strategy = determineStrategy(marine, affinity)
 	local command = {}
 	
-	if (strategy == "Explorer") then
+	if (marine.Health < 2) then
+		Explorer.priority = "health"
+		Marvin.mode = "sprint"
+		command = Explorer:nextMove(marine)
+			
+	elseif (strategy == "Explorer") then
 		print("[" .. marine.Id .. "] Next move in Explorer mode")
 		--Explorer.priority = "health"
+		Marvin.mode = "sprint"
 		command = Explorer:nextMove(marine)
 		
 	elseif (strategy == "Aggressive") then
 		print("[" .. marine.Id .. "] Next move in Aggressive mode")
+		Marvin.mode = "advance"
 		command = Aggressive:nextMove(marine)
 		
 	elseif (strategy == "Camper") then

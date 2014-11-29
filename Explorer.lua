@@ -82,12 +82,18 @@ function Explorer:nextMove(marine)
 		Explorer.nextPosition = Explorer:getNextTargetPosition()
 	end
 	
-	print("NEXT POS")
-	print_r(Explorer.nextPosition)
 	if (Explorer:areWeAtDestination(marine) ) then
 		--we reached our target position, pickup
 		Explorer.nextPosition = Explorer:getNextTargetPosition()
-		print("Picking up item:")
+		local items = Game.Map:entities_in(marine.Bounds)
+		
+		for k,v in ipairs(items) do
+			if (isPickupType(v.Type)) then
+				print("Picking up item: " .. v.Type)
+			end
+		end
+		
+		
 		return { { Command = "pickup" } }
 	end
 	

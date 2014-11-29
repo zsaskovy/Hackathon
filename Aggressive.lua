@@ -4,7 +4,7 @@ Aggressive.nextEnemy = nil
 
 
 function Aggressive:areWeAtDestination(marine)
-	local treshold = 5
+	local treshold = 7
 	
 	if Aggressive.nextEnemy == nil then return false end
 	
@@ -12,42 +12,30 @@ function Aggressive:areWeAtDestination(marine)
 	local los = Game.Map:entity_has_los(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 	local ap = Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 
-	print("line of sight: " .. tostring(los))
+	print("line of sight: " .. tostring(los) .. ", ap: " .. #ap)
 
 	return (los == true and treshold > #ap)
 end
 
 function Aggressive:getNextEnemy(marine)
---	function getPossibleNextItem()
---		local possibleWeapons = Game.Map:get_entities("w_")
---		local possibleItems = Game.Map:get_entities("i_")
---		local possibleAmmo = Game.Map:get_entities("ammo_")
---		local possibleEnv = Game.Map:get_entities("env_")
---		
---		local possibleAllItems = TableConcat(possibleWeapons,
---			TableConcat(possibleAmmo,
---			TableConcat(PossibleEnv, PossibleItems)
---		))
---		return (possibleAllItems[math.random(1,#possibleItems)])
---	end
---	
---	local possibleNextItem = getPossibleNextItem()
---
---	return coord(possibleNextItem.Bounds.X, possibleNextItem.Bounds.Y)
+	local ret = nil
 	local possibleEnemies = MapTools:getNearEnemies(marine.Bounds, nil)
-	-- print_r(possibleEnemies)
-	local r = math.random(1, #possibleEnemies)
-	--print("r: " .. r)
-	--print(#possibleEnemies)
-	--print_r(possibleEnemies[r][1])
-		
-	return possibleEnemies[r][1].Id
+
+	if (#possibleEnemies > 0) then
+		local r = math.random(1, #possibleEnemies)
+		ret = possibleEnemies[r][1].Id
+	end
+	
+	return ret
 end
 
 function Aggressive:nextMove(marine)
-		
 	if (Aggressive.nextEnemy == nil) then
 		Aggressive.nextEnemy = Aggressive:getNextEnemy(marine)
+		
+		if (Aggressive.nextEnemy == nil) then
+			return Explorer:nextMove(marine)
+		end
 	end
 	
 	if (Aggressive:areWeAtDestination(marine) ) then
@@ -59,6 +47,7 @@ function Aggressive:nextMove(marine)
 	print("[" .. marine.Id .. "] Chasing enemy (" .. enemy.Id .. ") at: " .. enemy.Bounds.X .. ", " .. enemy.Bounds.Y)
 	
 	local path = Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
+
 	for i,p in ipairs(path) do Strategy:visit(p) end
 	return {
 		{Command= "move", Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount) }
