@@ -18,6 +18,18 @@ function Explorer:getPowerup(c)
 	return nil
 end
 
+function Explorer:areWeAtDestination()
+	return (
+		Explorer.nextPosition ~= nil 
+		and coord(Explorer.nextPosition.X, Explorer.nextPosition.Y) == coord(marine.Bounds.X,marine.Bounds.Y) 
+	)
+end
+
+function Explorer:getNextTargetPosition()
+
+
+
+
 function Explorer:nextMove(marine)
 	--pick up if we're on powerup
 	local currentEntity = Explorer:getPowerup(marine.Bounds)
@@ -39,8 +51,7 @@ function Explorer:nextMove(marine)
 	
 	math.randomseed(12323131231212312)
 		
-	if (Explorer.nextPosition ~= nil 
-		and coord(Explorer.nextPosition.X, Explorer.nextPosition.Y) == coord(marine.Bounds.X,marine.Bounds.Y) ) then
+	if (Explorer:areWeAtDestination() ) then
 		--we reached our target position, pickup
 		Explorer.nextPosition = nil
 		return { Command = "pickup" }
