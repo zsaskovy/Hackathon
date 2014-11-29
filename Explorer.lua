@@ -24,7 +24,7 @@ function Explorer:areWeAtDestination(marine)
 	return ret
 end
 
-function Explorer:getNextTargetPosition()
+function Explorer:getNextTargetPosition(marine)
 	function getPossibleNextItem()
 	
 		local possibleWeapons = Game.Map:get_entities("w_")
@@ -35,22 +35,34 @@ function Explorer:getNextTargetPosition()
 		
 		--possible items based on priority
 		if (Explorer.priority == "ammo" and possibleAmmo ~= nil) then
-			possibleAllItems = possibleAmmo
+			for i=1,#possibleAmmo do
+				if (MapTools:hasPath(marine.Id, possibleAmmo[i].Bounds.X, possibleAmmo[i].Bounds.Y)) then
+					possibleAllItems[#possibleAllItems+1] = possibleAmmo[i]
+				end
+			end
 		elseif (Explorer.priority == "weapons" and possibleWeapons ~= nil) then
-			possibleAllItems = possibleWeapons
+			for i=1,#possibleWeapons do
+				if (MapTools:hasPath(marine.Id, possibleWeapons[i].Bounds.X, possibleWeapons[i].Bounds.Y)) then
+					possibleAllItems[#possibleAllItems+1] = possibleWeapons[i]
+				end
+			end
 		elseif (Explorer.priority == "health" and possibleItems ~= nil) then
+			print_r(possibleItems)
 			for i=1,#possibleItems do
-				if (isTypeHealth(possibleItems[i].Type)) then possibleAllItems[#possibleAllItems+1]=possibleItems[i] end
+				if (isTypeHealth(possibleItems[i].Type) and MapTools:hasPath(marine.Id, possibleItems[i].Bounds.X, possibleItems[i].Bounds.Y)) then 
+					possibleAllItems[#possibleAllItems+1]=possibleItems[i] 
+				end
 			end
 		end
 		
 		--if there's no priority, or there are no priority items, go back to default mode 
-		if (possibleAllItems == nil) then
+		if (#possibleAllItems == 0) then
 			possibleAllItems = TableConcat(possibleWeapons,
 				TableConcat(possibleAmmo,
 				TableConcat(PossibleEnv, PossibleItems)
 			))
 		end
+		print_r(possibleAllItems)
 		return (possibleAllItems[math.random(1,#possibleItems)])
 	end
 	
@@ -79,19 +91,20 @@ function Explorer:nextMove(marine)
 	--print_r(Game.Map:get_entity(marine.Id).Inventory)
 		
 	if (Explorer.nextPosition == nil) then
-		Explorer.nextPosition = Explorer:getNextTargetPosition()
+		Explorer.nextPosition = Explorer:getNextTargetPosition(marine)
 	end
 	
-	print("NEXT POS")
-	print_r(Explorer.nextPosition)
 	if (Explorer:areWeAtDestination(marine) ) then
 		--we reached our target position, pickup
-		Explorer.nextPosition = Explorer:getNextTargetPosition()
+		Explorer.nextPosition = Explorer:getNextTargetPosition(marine)
 		print("Picking up item:")
 		return { { Command = "pickup" } }
 	end
 	
 	local path = Game.Map:get_move_path(marine.Id, Explorer.nextPosition.X, Explorer.nextPosition.Y)
+	
+	print("PATH FROM " .. marine.Bounds.X .. "," .. marine.Bounds.Y .. " to " .. Explorer.nextPosition.X .. "," .. Explorer.nextPosition.Y)
+	print_r(path)
 	for i,p in ipairs(path) do Strategy:visit(p) end
 	return {
 		{Command= "move", Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount) }
