@@ -25,3 +25,20 @@ end
 function string_starts(String,Start)
    return string.sub(String,1,string.len(Start))==Start
 end
+
+function TableConcat(t1,t2)
+	if (t2 == nil) then return t1 end
+	if (t1 == nil) then return t2 end
+    for i=1,#t2 do
+        t1[#t1+1] = t2[i]
+    end
+    return t1
+end
+
+function TableFirstNElements(t, n)
+	local ret = {}
+	for i=1,math.min(n,#t) do
+		ret[#ret+1] = t[i]
+	end
+	return ret
+end

@@ -1,6 +1,6 @@
 Explorer = class("Explorer", Strategy)
 
-Explorer.static.nextPosition = nil
+Explorer.nextPosition = nil
 
 function isPickupType(t)
 	return (MapTools.pickupTypes[t] ~= nil)
@@ -10,18 +10,8 @@ function isWeaponType(t)
 	return (MapTools.weaponTypes[t] ~= nil)
 end
 
-function Explorer:getPowerup(c)
-	local currentEntities = Game.Map.get_entities(c)
-	for i,e in pairs(currentEntities) do
-		if (isPickupType(e.Type)) then 
-			return e
-		end
-	end
-	
-	return nil
-end
 
-function Explorer:areWeAtDestination()
+function Explorer:areWeAtDestination(marine)
 	return (
 		Explorer.nextPosition ~= nil 
 		and coord(Explorer.nextPosition.X, Explorer.nextPosition.Y) == coord(marine.Bounds.X,marine.Bounds.Y) 
@@ -29,14 +19,32 @@ function Explorer:areWeAtDestination()
 end
 
 function Explorer:getNextTargetPosition()
+	function getPossibleNextItem()
+		local possibleWeapons = Game.Map:get_entities("w_")
+		local possibleItems = Game.Map:get_entities("i_")
+		local possibleAmmo = Game.Map:get_entities("ammo_")
+		local possibleEnv = Game.Map:get_entities("env_")
+		
+		local possibleAllItems = TableConcat(possibleWeapons,
+			TableConcat(possibleAmmo,
+			TableConcat(PossibleEnv, PossibleItems)
+		))
+		return (possibleAllItems[math.random(1,#possibleItems)])
+	end
+	
+	local possibleNextItem = getPossibleNextItem()
+	print "heading for item:"
+	print_r(possibleNextItem)
+	return coord(possibleNextItem.Bounds.X, possibleNextItem.Bounds.Y)
+end
 
 
 
 
 function Explorer:nextMove(marine)
-	--pick up if we're on powerup
+	--[[pick up if we're on powerup
 	local currentEntity = Explorer:getPowerup(marine.Bounds)
-	
+		
 	if ( currentEntity ~= nil ) then -- and (not Strategy:recentlyVisited(marine.Bounds)) ) then
 		if (isWeaponType(currentEntity.Type)) then
 			Marvin.weapons[currentEntity.Type] = true
@@ -47,35 +55,25 @@ function Explorer:nextMove(marine)
 		return { Command = "pickup" }
 	end
 	Strategy:visit(coord(marine.Bounds.X, marine.Bounds.Y))
+	]]--
 	
-	local possibleCells = MapTools:getPassableCells(marine.Bounds, marine.MovePoints)
-	local possibleItems = MapTools:getNearItems(marine.Bounds, 100)
 	
 	math.randomseed(12323131231212312)
 		
-	if (Explorer:areWeAtDestination() ) then
+	if (Explorer.nextPosition == nil) then
+		Explorer.nextPosition = Explorer:getNextTargetPosition()
+	end
+	if (Explorer:areWeAtDestination(marine) ) then
 		--we reached our target position, pickup
-		Explorer.nextPosition = nil
+		Explorer.nextPosition = Explorer:getNextTargetPosition()
 		return { Command = "pickup" }
-	elseif (#possibleItems > 0) then
-		local r = math.random(1, #possibleItems)
-		nextPosition = possibleItems[r][1]
-		nextPosition = coord(nextPosition.Bounds.X, nextPosition.Bounds.Y)
-	elseif(#possibleCells > 0) then
-		local r = math.random(1, #possibleCells)
-		nextPosition = possibleCells[r]
-	else
-		return { Command = "done" }
 	end
 	
-	print("Next position:")
-	print_r(nextPosition)
-	
-	local path = Game.Map:get_move_path(marine.Id, nextPosition.X, nextPosition.Y)
+	local path = Game.Map:get_move_path(marine.Id, Explorer.nextPosition.X, Explorer.nextPosition.Y)
 	for i,p in ipairs(path) do Strategy:visit(p) end
 	return {
 		Command= "move",
-		Path= path
+		Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount)
 	}
 
 end
