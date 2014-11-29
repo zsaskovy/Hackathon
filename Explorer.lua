@@ -1,14 +1,15 @@
 Explorer = class("Explorer", Strategy)
 
 Explorer.static.nextPosition = nil
+
 function isPickupType(t)
 	return (MapTools.pickupTypes[t] ~= nil)
-endfunction isWeaponType(t)
+end
+function isWeaponType(t)
 	return (MapTools.weaponTypes[t] ~= nil)
 end
-function Explorer:getPowerup(c)
 
-	
+function Explorer:getPowerup(c)	
 	for i,e in pairs(currentEntities) do
 		if (isPickupType(e.Type)) then 
 			return e
