@@ -22,6 +22,6 @@ function determineStrategy(marine, affinity)
 		end
 	end
 	
-	return "Explorer"
-	--return choosenStrategy
+	--return "Explorer"
+	return choosenStrategy
 end
