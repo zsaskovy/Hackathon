@@ -26,10 +26,12 @@ function strategyWeights(marine)
 						end
 					end
 					
-					marine_value = 7-distance
+					marine_value = math.abs(7-distance) * 2
 				else
 					marine_value = 1
 				end
+				
+				print("marine value: " .. marine_value)
 
 			elseif (key == "Invisible" or key == "CanDodge" or key == "IgnoresFailedDices" or key == "IgnoresSight" or key == "CanDoAimed" or key == "IgnoresCollisions") then
 				if (marine[key] == true) then
