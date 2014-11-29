@@ -73,6 +73,7 @@ function Explorer:getNextTargetPosition(marine)
 	end
 	
 	local possibleNextItem = getPossibleNextItem()
+	--print_r(possibleNextItem)
 
 	return coord(possibleNextItem.Bounds.X, possibleNextItem.Bounds.Y)
 end
