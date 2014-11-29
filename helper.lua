@@ -42,3 +42,13 @@ function TableFirstNElements(t, n)
 	end
 	return ret
 end
+
+--matches all health types
+function isTypeHealth(t)
+	return (string.match(t, "medikit") or string.match(t, "health"))
+end
+
+--matches all goodie types except keys
+function isPowerup(t)
+	return (string.match(t, "i_") and not string.match(t, "key"))
+end
