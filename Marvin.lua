@@ -42,16 +42,10 @@ function Marvin:provide_steps(prev)
             Marvin.mode = "advance"
         end
 		command = Aggressive:nextMove(marine)
-		
---	elseif (strategy == "Camper") then
---		print("[" .. marine.Id .. "] Next move in Camper mode")
---		command = Camper:nextMove(marine)
+
 	end
 
-	--print_r(command)
 	return 
 		command
-		--,{ Command = "done" } 
-	
 end
 

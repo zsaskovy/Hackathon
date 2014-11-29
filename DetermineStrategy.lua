@@ -5,24 +5,24 @@ local affinities = {
 }
 
 function determineStrategy(marine, affinity)
-	local points = strategyWeights(marine)
-	local max = points["Explorer"]
-	local choosenStrategy = "Explorer"
-	
-	for strategy, point in pairs(points) do
-		points[strategy] = points[strategy] * affinities[affinity][strategy]
-	end
-	
-	--print_r(points)
-	
-	for strategy, point in pairs(points) do
-		if (point > max) then
-			max = point
-			choosenStrategy = strategy
-		end
-	end
-	
-	--return "Explorer"
+--	local points = strategyWeights(marine)
+--	local max = points["Explorer"]
+--	local choosenStrategy = "Explorer"
+--	
+--	for strategy, point in pairs(points) do
+--		points[strategy] = points[strategy] * affinities[affinity][strategy]
+--	end
+--	
+--	--print_r(points)
+--	
+--	for strategy, point in pairs(points) do
+--		if (point > max) then
+--			max = point
+--			choosenStrategy = strategy
+--		end
+--	end
+--	
+--	--return "Explorer"
 	local weapons = {
 		w_shotgun = 2, 
 		w_chaingun = 3, 
@@ -49,7 +49,18 @@ function determineStrategy(marine, affinity)
 		end
 	end
 
-	if (max_weapon == "w_pistol") then
+
+	local nearEnemies = MapTools:getNearEnemies(marine.Bounds, 4)
+	local forcedAttack = false
+	
+	if (#nearEnemies > 0) then
+		closest = MapTools:getClosestEnemy(marine, nearEnemies)
+		Aggressive.nextEnemy = closest.Id
+		forcedAttack = true
+	end
+
+
+	if (max_weapon == "w_pistol" and forcedAttack == false) then
 		return "Explorer"
 	else
 		return "Aggressive"

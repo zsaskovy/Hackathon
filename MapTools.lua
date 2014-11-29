@@ -240,3 +240,19 @@ function MapTools:getClosest(marine, entities)
 	--print_r(ret)
 	return ret
 end
+
+function MapTools:getClosestEnemy(marine, entities)
+	local ret = {}
+	local minDistance = -1
+	
+	for i = 1, #entities do
+		local path = Game.Map:get_move_path(marine.Id, entities[i][1].Bounds.X, entities[i][1].Bounds.Y)
+		if (path ~= nil and #path > 0 and (#path < minDistance or minDistance == -1)) then
+			minDistance = #path
+			ret = entities[i][1]
+		end
+	end
+	--print_r(entities)
+	--print_r(ret)
+	return ret
+end
