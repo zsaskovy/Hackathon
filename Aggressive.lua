@@ -32,6 +32,6 @@ function Aggressive:nextMove(marine)
 	local path = Game.Map:get_move_path(marine.Id, nextPosition.X, nextPosition.Y)
 	return {
 		Command= "move",
-		Path= path
+		Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount)
 	}
 end

@@ -33,8 +33,7 @@ function Explorer:getNextTargetPosition()
 	end
 	
 	local possibleNextItem = getPossibleNextItem()
-	print "heading for item:"
-	print_r(possibleNextItem)
+
 	return coord(possibleNextItem.Bounds.X, possibleNextItem.Bounds.Y)
 end
 
