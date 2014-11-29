@@ -36,11 +36,11 @@ function Marvin:provide_steps(prev)
 		
 	elseif (strategy == "Aggressive") then
 		print("[" .. marine.Id .. "] Next move in Aggressive mode")
---        if (Aggressive:areWeReadyToUnload(marine)) then
---            Marvin.mode = "unload"
---        else
+        if (Aggressive:areWeReadyToUnload(marine)) then
+            Marvin.mode = "unload"
+        else
             Marvin.mode = "advance"
---        end
+        end
 		command = Aggressive:nextMove(marine)
 		
 --	elseif (strategy == "Camper") then
