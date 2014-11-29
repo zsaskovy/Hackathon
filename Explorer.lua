@@ -1,6 +1,6 @@
 Explorer = class("Explorer", Strategy)
 
-Explorer.nextPosition = nil
+Explorer.nextPosition = { }
 
 --can be: nil, weapons, health, ammo
 Explorer.priority = "weapons"
@@ -9,17 +9,17 @@ Explorer.forceClosest = false
 function isPickupType(t)
 	return (MapTools.pickupTypes[t] ~= nil)
 end
-
-function isWeaponType(t)
-	return (MapTools.weaponTypes[t] ~= nil)
-end
-
+--
+--function isWeaponType(t)
+--	return (MapTools.weaponTypes[t] ~= nil)
+--end
+--
 
 function Explorer:areWeAtDestination(marine)
 	local ret = (
-		Explorer.nextPosition ~= nil 
-		and Explorer.nextPosition.X == marine.Bounds.X
-		and Explorer.nextPosition.Y == marine.Bounds.Y 
+		Explorer.nextPosition[marine.Id] ~= nil 
+		and Explorer.nextPosition[marine.Id].X == marine.Bounds.X
+		and Explorer.nextPosition[marine.Id].Y == marine.Bounds.Y 
 	)
 
 	return ret
@@ -99,13 +99,13 @@ function Explorer:nextMove(marine)
 	--print("CURRENT INVENTORY")
 	--print_r(Game.Map:get_entity(marine.Id).Inventory)
 		
-	if (Explorer.nextPosition == nil) then
-		Explorer.nextPosition = Explorer:getNextTargetPosition(marine)
+	if (Explorer.nextPosition[marine.Id] == nil) then
+		Explorer.nextPosition[marine.Id] = Explorer:getNextTargetPosition(marine)
 	end
 	
 	if (Explorer:areWeAtDestination(marine) ) then
 		--we reached our target position, pickup
-		Explorer.nextPosition = Explorer:getNextTargetPosition(marine)
+		Explorer.nextPosition[marine.Id] = Explorer:getNextTargetPosition(marine)
 		local items = Game.Map:entities_in(marine.Bounds)
 		
 		for k,v in ipairs(items) do
@@ -118,9 +118,9 @@ function Explorer:nextMove(marine)
 		return { { Command = "pickup" } }
 	end
 	
-	local path = Game.Map:get_move_path(marine.Id, Explorer.nextPosition.X, Explorer.nextPosition.Y)
+	local path = Game.Map:get_move_path(marine.Id, Explorer.nextPosition[marine.Id].X, Explorer.nextPosition[marine.Id].Y)
 	
-	--print("PATH FROM " .. marine.Bounds.X .. "," .. marine.Bounds.Y .. " to " .. Explorer.nextPosition.X .. "," .. Explorer.nextPosition.Y)
+	--print("PATH FROM " .. marine.Bounds.X .. "," .. marine.Bounds.Y .. " to " .. Explorer.nextPosition[marine.Id].X .. "," .. Explorer.nextPosition[marine.Id].Y)
 	--print_r(path)
 	for i,p in ipairs(path) do Strategy:visit(p) end
 	return 

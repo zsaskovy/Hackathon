@@ -12,7 +12,7 @@ function Aggressive:areWeAtDestination(marine)
 	local los = Game.Map:entity_has_los(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 	local ap = Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 
-	print("line of sight: " .. tostring(los) .. ", ap: " .. #ap)
+	--print("line of sight: " .. tostring(los) .. ", ap: " .. #ap)
 
 	return (los == true and treshold > #ap)
 end
