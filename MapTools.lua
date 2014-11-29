@@ -148,6 +148,5 @@ end
 
 function MapTools:hasPath(entityId, targetX, targetY)
 	local path = Game.Map:get_move_path(entityId, targetX, targetY)
-	print(#path)
 	return (#path ~= 0)
 end

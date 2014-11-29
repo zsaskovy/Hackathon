@@ -47,10 +47,10 @@ function Explorer:getNextTargetPosition(marine)
 				end
 			end
 		elseif (Explorer.priority == "health" and possibleItems ~= nil) then
-			print_r(possibleItems)
-			for i=1,#possibleItems do
-				if (isTypeHealth(possibleItems[i].Type) and MapTools:hasPath(marine.Id, possibleItems[i].Bounds.X, possibleItems[i].Bounds.Y)) then 
-					possibleAllItems[#possibleAllItems+1]=possibleItems[i] 
+			local possibleHealthItems = TableConcat(possibleItems,possibleEnv)
+			for i=1,#possibleHealthItems do
+				if (isTypeHealth(possibleHealthItems[i].Type) and MapTools:hasPath(marine.Id, possibleHealthItems[i].Bounds.X, possibleHealthItems[i].Bounds.Y)) then 
+					possibleAllItems[#possibleAllItems+1]=possibleHealthItems[i] 
 				end
 			end
 		end
@@ -63,7 +63,7 @@ function Explorer:getNextTargetPosition(marine)
 			))
 		end
 		
-		return (possibleAllItems[math.random(1,#possibleItems)])
+		return (possibleAllItems[math.random(1,#possibleAllItems)])
 	end
 	
 	local possibleNextItem = getPossibleNextItem()
@@ -111,8 +111,8 @@ function Explorer:nextMove(marine)
 	
 	local path = Game.Map:get_move_path(marine.Id, Explorer.nextPosition.X, Explorer.nextPosition.Y)
 	
-	print("PATH FROM " .. marine.Bounds.X .. "," .. marine.Bounds.Y .. " to " .. Explorer.nextPosition.X .. "," .. Explorer.nextPosition.Y)
-	print_r(path)
+	--print("PATH FROM " .. marine.Bounds.X .. "," .. marine.Bounds.Y .. " to " .. Explorer.nextPosition.X .. "," .. Explorer.nextPosition.Y)
+	--print_r(path)
 	for i,p in ipairs(path) do Strategy:visit(p) end
 	return {
 		{Command= "move", Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount) }
