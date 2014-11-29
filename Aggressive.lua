@@ -57,6 +57,10 @@ function Aggressive:nextMove(marine)
 
 end
 
+function Aggressive:areWeReadyToUnload(marine)
+    return marine ~= nil and Aggressive.nextEnemy ~= nil and Aggressive:areWeAtDestination(marine)
+end
+
 function Aggressive:getAttackPath(marine, enemy)
     local path = nil
     local minPathStep = 99999
