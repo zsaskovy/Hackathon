@@ -1,9 +1,13 @@
 Explorer = class("Explorer", Strategy)
 
+Explorer.static.nextPosition = nil
+
 function Explorer:getPowerup(c)
 	function isPickupType(t)
+		if (t==nil)then return false end
+		print("ispickup " .. t)
 		for i,validType in ipairs(MapTools.pickupTypes) do
-			if t == validType then return true end
+			if string_starts(t,validType) then return true end
 		end
 		return false
 	end
@@ -24,25 +28,26 @@ function Explorer:nextMove(marine)
 	--pick up if we're on powerup
 	local currentEntity = Explorer:getPowerup(marine.Bounds)
 	
-	print_r(Game.Map:entities_in(marine.Bounds.X, marine.Bounds.Y,10,10))
-	if ( currentEntity ~= nil and not Strategy:recentlyVisited(marine.Bounds) ) then
-		print_r(Strategy.recentPositions)
-		Strategy.recentPositions = { marine.Bounds }
+	if ( currentEntity ~= nil ) then -- and (not Strategy:recentlyVisited(marine.Bounds)) ) then
+		print("PICKUP!")
 		return { Command = "pickup" }
 	end
+	Strategy:visit(coord(marine.Bounds.X, marine.Bounds.Y))
 	
 	local possibleCells = MapTools:getPassableCells(marine.Bounds, marine.MovePoints)
-	local possibleItems = MapTools:getNearItems(marine.Bounds, marine.MovePoints)
+	local possibleItems = MapTools:getNearItems(marine.Bounds, 100)
 	
 	math.randomseed(12323131231212312)
-	local nextPosition = nil
-	local headToPickup = false
-	
-	if (#possibleItems > 0) then
+		
+	if (Explorer.nextPosition ~= nil 
+		and coord(Explorer.nextPosition.X, Explorer.nextPosition.Y) == coord(marine.Bounds.X,marine.Bounds.Y) ) then
+		--we reached our target position, pickup
+		Explorer.nextPosition = nil
+		return { Command = "pickup" }
+	elseif (#possibleItems > 0) then
 		local r = math.random(1, #possibleItems)
 		nextPosition = possibleItems[r][1]
 		nextPosition = coord(nextPosition.Bounds.X, nextPosition.Bounds.Y)
-		headToPickup = true
 	elseif(#possibleCells > 0) then
 		local r = math.random(1, #possibleCells)
 		nextPosition = possibleCells[r]
@@ -50,12 +55,11 @@ function Explorer:nextMove(marine)
 		return { Command = "done" }
 	end
 	
-	--[[print("")
 	print("Next position:")
 	print_r(nextPosition)
-	print(" ")]]--
 	
 	local path = Game.Map:get_move_path(marine.Id, nextPosition.X, nextPosition.Y)
+	for i,p in ipairs(path) do Strategy:visit(p) end
 	return {
 		Command= "move",
 		Path= path

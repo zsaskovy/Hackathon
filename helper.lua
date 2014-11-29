@@ -5,10 +5,11 @@ function print_r (tbl, indent)
 	return
   end
   
-  if (#tbl == 0) then
+  --[[if (#tbl == 0) then
   	print("EMPTY")
---  	return
-  end
+  	return
+  end]]--
+  print("table:[")
   for k, v in pairs(tbl) do
     formatting = string.rep("  ", indent) .. k .. ": "
     if type(v) == "table" then
@@ -18,4 +19,9 @@ function print_r (tbl, indent)
       print(formatting .. tostring(v))
     end
   end
+  print("]")
+end
+
+function string_starts(String,Start)
+   return string.sub(String,1,string.len(Start))==Start
 end
