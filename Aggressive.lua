@@ -4,7 +4,20 @@ Aggressive.nextEnemy = nil
 
 
 function Aggressive:areWeAtDestination(marine)
-	local treshold = 6
+	local weaponRanges = {
+		w_pistol = 2,
+		w_shotgun = 0, 
+		w_chaingun = 2, 
+		w_rocket_launcher = 4, 
+		w_chainsaw = -2, 
+		w_plasma = 4, 
+		w_bfg = 4, 
+		w_machinegun = 3, 
+		w_grenade = 3
+	}
+	
+	--local treshold = 6
+	local treshold = 4 + weaponRanges[ Aggressive:selectBestWeapon(marine)]
 	
 	if UnderAttack == nil then return false end
 	
