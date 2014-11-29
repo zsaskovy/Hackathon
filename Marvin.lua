@@ -20,7 +20,7 @@ function Marvin:provide_steps(prev)
 	local command = {}
 	Explorer.priority = nil
 	
-	if (marine.Health - marine.Wounds < 2) then
+	if (marine.Health - marine.Wounds < 1) then
 		print("[" .. marine.Id .. "] I'm at: " .. marine.Bounds.X .. ", " .. marine.Bounds.Y .. " Next move in Getaway mode")
 		Explorer.priority = "health"
 		Explorer.forceClosest = true
