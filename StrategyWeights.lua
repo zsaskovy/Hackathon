@@ -17,7 +17,16 @@ function strategyWeights(marine)
 				local nearEnemies = MapTools:getNearEnemies(marine.Bounds, 6)
 
 				if (#nearEnemies > 0) then
-					marine_value = 1
+					local distance = 99999
+					for k,v in pairs(nearEnemies) do
+						local ap = Game.Map:get_attack_path(marine.Id, v[1].Bounds.X, v[1].Bounds.Y)
+						
+						if (#ap < distance) then
+							distance = #ap
+						end
+					end
+					
+					marine_value = 7-distance
 				else
 					marine_value = 1
 				end
