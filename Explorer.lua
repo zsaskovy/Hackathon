@@ -114,8 +114,8 @@ function Explorer:nextMove(marine)
 	--print("PATH FROM " .. marine.Bounds.X .. "," .. marine.Bounds.Y .. " to " .. Explorer.nextPosition.X .. "," .. Explorer.nextPosition.Y)
 	--print_r(path)
 	for i,p in ipairs(path) do Strategy:visit(p) end
-	return {
-		{Command= "move", Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount) }
-	}
+	return 
+		MapTools:collectShitWhileMoving( {Command= "move", Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount) } )
+	
 
 end

@@ -177,3 +177,50 @@ function MapTools:hasSafePath(entityId, targetX, targetY)
 	end
 	return true
 end
+
+--splits the move command with item pickup commands if possible
+function MapTools:collectShitWhileMoving(moveCommand)
+
+	function hasPickupEntity(pos)
+		local ents = Game.Map:entities_at(pos.X, pos.Y)
+		if (ents == nil or #ents == 0) then return false end
+		for i=1,#ents do
+			if (isPickupItem(ents[i].Type)) then return true end
+		end
+		return false
+	end
+	
+	local newCommand = {}
+	local newPath = {}
+	local curPath = moveCommand.Path
+	local pickup = false
+	
+--print("COMMAND")
+--print_r(curPath)
+	
+	
+	if (curPath == nil or #curPath <1) then 
+		--print("NOCOMMAND")
+		--return moveCommand 
+	end
+	
+	for i=1, #curPath do
+		newPath[#newPath+1] = curPath[i]
+		
+		if (i>1 and hasPickupEntity(curPath[i])) then
+			print("PICKUP")
+			pickup = true
+			newCommand[#newCommand+1] = {Command = "move", Path = newPath}
+			newCommand[#newCommand+1] = {Command = "pickup"}
+			newPath = {}
+		end
+	end
+	if (#newPath > 0) then newCommand[#newCommand+1] = {Command = "move", Path = newPath} end
+
+	if (pickup) then 
+		print("NEWCOMMAND")
+		print_r(newCommand)
+	end
+	return newCommand
+
+end
