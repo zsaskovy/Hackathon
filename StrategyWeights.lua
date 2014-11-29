@@ -17,11 +17,11 @@ function strategyWeights(marine)
 				local nearEnemies = MapTools:getNearEnemies(marine.Bounds, 6)
 
 				if (#nearEnemies > 0) then
-					local distance = 99999
+					local distance = nil
 					for k,v in pairs(nearEnemies) do
 						local ap = Game.Map:get_attack_path(marine.Id, v[1].Bounds.X, v[1].Bounds.Y)
 						
-						if (#ap < distance) then
+						if (distance == nil or #ap < distance) then
 							distance = #ap
 						end
 					end
@@ -44,9 +44,9 @@ function strategyWeights(marine)
 			end
 
 			if (marine_value ~= nil) then 
-				if (value * marine_value > 0) then
-					print(w_key .. "/" .. key .. " -> " .. (value * marine_value))
-				end
+--				if (value * marine_value > 0) then
+--					print(w_key .. "/" .. key .. " -> " .. (value * marine_value))
+--				end
 				values[w_key] = values[w_key] + (value * marine_value)
 			end
 		end

@@ -224,3 +224,18 @@ function MapTools:collectShitWhileMoving(moveCommand)
 	return newCommand
 
 end
+
+function MapTools:getClosest(marine, entities)
+	local ret = {}
+	local minDistance = -1
+	
+	for i = 1, #entities do
+		local path = Game.Map:get_move_path(marine.Id, Explorer.nextPosition.X, Explorer.nextPosition.Y)
+		if (path ~= nil and (#path < minDistance or minDistance == -1)) then
+			minDistance = #path
+			ret = entities[i]
+		end
+	end
+	
+	return ret
+end

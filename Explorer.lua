@@ -4,6 +4,7 @@ Explorer.nextPosition = nil
 
 --can be: nil, weapons, health, ammo
 Explorer.priority = "weapons"
+Explorer.forceClosest = false
 
 function isPickupType(t)
 	return (MapTools.pickupTypes[t] ~= nil)
@@ -63,7 +64,12 @@ function Explorer:getNextTargetPosition(marine)
 			))
 		end
 		
-		return (possibleAllItems[math.random(1,#possibleAllItems)])
+		if (Explorer.forceClosest and Explorer.priority ~= nil ) then
+			Explorer.forceClosest = false
+			return MapTools:getClosest(marine, possibleAllItems)
+		else 
+			return (possibleAllItems[math.random(1,#possibleAllItems)])
+		end
 	end
 	
 	local possibleNextItem = getPossibleNextItem()

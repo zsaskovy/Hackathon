@@ -23,6 +23,7 @@ function Marvin:provide_steps(prev)
 	if (marine.Health - marine.Wounds < 2) then
 		print("[" .. marine.Id .. "] Next move in Getaway mode")
 		Explorer.priority = "health"
+		Explorer.forceClosest = true
 		Marvin.mode = "sprint"
 		command = Explorer:nextMove(marine)
 			
@@ -37,9 +38,9 @@ function Marvin:provide_steps(prev)
 		Marvin.mode = "advance"
 		command = Aggressive:nextMove(marine)
 		
-	elseif (strategy == "Camper") then
-		print("[" .. marine.Id .. "] Next move in Camper mode")
-		command = Camper:nextMove(marine)
+--	elseif (strategy == "Camper") then
+--		print("[" .. marine.Id .. "] Next move in Camper mode")
+--		command = Camper:nextMove(marine)
 	end
 
 	--print_r(command)
