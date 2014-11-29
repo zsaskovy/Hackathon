@@ -4,7 +4,7 @@ Aggressive.nextEnemy = nil
 
 
 function Aggressive:areWeAtDestination(marine)
-	local treshold = 7
+	local treshold = 6
 	
 	if Aggressive.nextEnemy == nil then return false end
 	
@@ -70,10 +70,7 @@ function Aggressive:getAttackPath(marine, enemy)
             end
         end
     end
---    local path = Game.Map:get_move_path(marine.Id, 1000, 1000)
---    print("++++++++++++++")
---    print_r(path)
---    print("--------------")
+
     return path
 --    return Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 end

@@ -27,7 +27,7 @@ function determineStrategy(marine, affinity)
 		w_shotgun = 2, 
 		w_chaingun = 3, 
 		w_rocket_launcher = 12, 
-		w_chainsaw = 2, 
+		--w_chainsaw = 2, 
 		w_plasma = 12, 
 		w_bfg = 12, 
 		w_machinegun = 7, 
