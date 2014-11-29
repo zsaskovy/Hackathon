@@ -138,12 +138,20 @@ function MapTools:getNearEnemies(coord, maxDistance)
 	if (stuff == nil) then return ret end
 	
 	for k, v in pairs(stuff) do
+        --if (valid_types[v.Type] and not isTeamMember(v)) then
 		if (valid_types[v.Type] and (v.Bounds.X ~= coord.X or v.Bounds.Y ~= coord.Y)) then
 			ret[#ret+1] = {v}
 		end
 	end
 	
 	return ret
+end
+
+function isTeamMember(marine)
+    for i = 1, #Marvins do
+        if (Marvins[i].Id == marine.Id) then return true end
+    end
+    return false
 end
 
 function MapTools:hasPath(entityId, targetX, targetY)
