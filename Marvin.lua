@@ -4,7 +4,7 @@ Marvin.weapons = {}
 Marvin.mode = "advance"
 local affinity = "Explorer"
 
-math.randomseed(13)
+math.randomseed(121)
 
 function Marvin:select_mode()
 	return Marvin.mode
