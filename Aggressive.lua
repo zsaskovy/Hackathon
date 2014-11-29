@@ -38,7 +38,7 @@ function Aggressive:nextMove(marine)
 		end
 	end
 	
-	if (Aggressive:areWeAtDestination(marine) ) then
+	if (Aggressive:areWeAtDestination(marine) and marine.AttackPoints > 0 ) then
 		--we reached our target position, attack
 		return Aggressive:attackEnemy(marine)
 	end
