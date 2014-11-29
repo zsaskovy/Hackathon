@@ -36,20 +36,20 @@ function Explorer:getNextTargetPosition(marine)
 		--possible items based on priority
 		if (Explorer.priority == "ammo" and possibleAmmo ~= nil) then
 			for i=1,#possibleAmmo do
-				if (MapTools:hasPath(marine.Id, possibleAmmo[i].Bounds.X, possibleAmmo[i].Bounds.Y)) then
+				if (MapTools:hasSafePath(marine.Id, possibleAmmo[i].Bounds.X, possibleAmmo[i].Bounds.Y)) then
 					possibleAllItems[#possibleAllItems+1] = possibleAmmo[i]
 				end
 			end
 		elseif (Explorer.priority == "weapons" and possibleWeapons ~= nil) then
 			for i=1,#possibleWeapons do
-				if (MapTools:hasPath(marine.Id, possibleWeapons[i].Bounds.X, possibleWeapons[i].Bounds.Y)) then
+				if (MapTools:hasSafePath(marine.Id, possibleWeapons[i].Bounds.X, possibleWeapons[i].Bounds.Y)) then
 					possibleAllItems[#possibleAllItems+1] = possibleWeapons[i]
 				end
 			end
 		elseif (Explorer.priority == "health" and possibleItems ~= nil) then
 			local possibleHealthItems = TableConcat(possibleItems,possibleEnv)
 			for i=1,#possibleHealthItems do
-				if (isTypeHealth(possibleHealthItems[i].Type) and MapTools:hasPath(marine.Id, possibleHealthItems[i].Bounds.X, possibleHealthItems[i].Bounds.Y)) then 
+				if (isTypeHealth(possibleHealthItems[i].Type) and MapTools:hasSafePath(marine.Id, possibleHealthItems[i].Bounds.X, possibleHealthItems[i].Bounds.Y)) then 
 					possibleAllItems[#possibleAllItems+1]=possibleHealthItems[i] 
 				end
 			end

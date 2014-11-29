@@ -150,3 +150,22 @@ function MapTools:hasPath(entityId, targetX, targetY)
 	local path = Game.Map:get_move_path(entityId, targetX, targetY)
 	return (#path ~= 0)
 end
+
+function MapTools:isEntitySafe(entity)
+	return (entity.Type ~= "env_acid")
+end
+
+function MapTools:hasSafePath(entityId, targetX, targetY)
+	local path = Game.Map:get_move_path(entityId, targetX, targetY)
+	for i=1, #path do
+		local ents = Game.Map:entities_at(path[i].X, path[i].Y)
+		print("ENTITIES")
+		print_r(ents)
+		if (ents ~= nil and #ents > 0) then
+			for j=1, #ents do
+				if (not (MapTools:isEntitySafe(ents[j]))) then return false end
+			end
+		end
+	end
+	return true
+end
