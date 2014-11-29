@@ -43,7 +43,9 @@ function Explorer:getNextTargetPosition(marine)
 			end
 		elseif (Explorer.priority == "weapons" and possibleWeapons ~= nil) then
 			for i=1,#possibleWeapons do
-				if (MapTools:hasSafePath(marine.Id, possibleWeapons[i].Bounds.X, possibleWeapons[i].Bounds.Y)) then
+				if (
+				not string.match(possibleWeapons[i].Type, "chainsaw")
+				and MapTools:hasSafePath(marine.Id, possibleWeapons[i].Bounds.X, possibleWeapons[i].Bounds.Y)) then
 					possibleAllItems[#possibleAllItems+1] = possibleWeapons[i]
 				end
 			end

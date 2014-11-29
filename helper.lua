@@ -56,9 +56,10 @@ end
 --matches all goodie types that should be picked up along the way
 function isPickupItem(t)
 	return (
-		string.match(t, "w_") or
+		(string.match(t, "w_") or
 		string.match(t, "i_") or
 		string.match(t, "a_") or
-		isTypeHealth(t)
+		isTypeHealth(t)) and
+		not string.match(t, "chainsaw")
 	)
 end
