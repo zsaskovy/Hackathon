@@ -29,7 +29,7 @@ function Marvin:provide_steps(prev)
 			
 	elseif (strategy == "Explorer") then
 		print("[" .. marine.Id .. "] Next move in Explorer mode")
-		--Explorer.priority = "health"
+		Explorer.priority = "weapons"
 		Marvin.mode = "sprint"
 		command = Explorer:nextMove(marine)
 		

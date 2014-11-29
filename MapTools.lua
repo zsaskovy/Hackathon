@@ -167,8 +167,8 @@ function MapTools:hasSafePath(entityId, targetX, targetY)
 	local path = Game.Map:get_move_path(entityId, targetX, targetY)
 	for i=1, #path do
 		local ents = Game.Map:entities_at(path[i].X, path[i].Y)
-		print("ENTITIES")
-		print_r(ents)
+		--print("ENTITIES")
+		--print_r(ents)
 		if (ents ~= nil and #ents > 0) then
 			for j=1, #ents do
 				if (not (MapTools:isEntitySafe(ents[j]))) then return false end
@@ -219,7 +219,7 @@ function MapTools:collectShitWhileMoving(moveCommand)
 
 	if (pickup) then 
 		print("NEWCOMMAND")
-		print_r(newCommand)
+		--print_r(newCommand)
 	end
 	return newCommand
 

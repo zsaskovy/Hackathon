@@ -13,7 +13,7 @@ function determineStrategy(marine, affinity)
 		points[strategy] = points[strategy] * affinities[affinity][strategy]
 	end
 	
-	print_r(points)
+	--print_r(points)
 	
 	for strategy, point in pairs(points) do
 		if (point > max) then
