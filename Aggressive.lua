@@ -25,7 +25,7 @@ function Aggressive:areWeAtDestination(marine)
 	local los = Game.Map:entity_has_los(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 	local ap = Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 
-	--print("line of sight: " .. tostring(los) .. ", ap: " .. #ap)
+    --print("line of sight: " .. tostring(los) .. ", ap: " .. #ap .. "th:" .. treshold)
 
 	return (los == true and treshold > #ap)
 end
@@ -70,10 +70,53 @@ function Aggressive:nextMove(marine)
     --print_r(path)
     
 	for i,p in ipairs(path) do Strategy:visit(p) end
-	return {
-		{Command= "move", Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount) }
+    local attackPath = TableFirstNElements(path, marine.MovePoints - marine.MoveCount)
+	local commands = {
+		{Command= "move", Path = attackPath }
 	}
+    
+	if (Aggressive:areWeNereDestionation(marine, attackPath, #path) and marine.AttackPoints > 0 ) then
+        local attackCommands = Aggressive:attackEnemy(marine)
+        return TableConcat(commands, attackCommands)
+	end
+    
+    return commands
+end
 
+function Aggressive:areWeNereDestionation(marine, attackPath, movePointsToAttack)
+    local enemy = Game.Map:get_entity(Aggressive.nextEnemy[marine.Id])
+	if enemy == nil then return false end
+    
+    --print_r(attackPath)
+    local last_coord = marine.Bounds
+    if #attackPath == 0 then
+        last_coord = attackPath[#attackPath]
+    end
+    if (last_coord == nil) then
+        return false
+    end
+    
+	local weaponRanges = {
+		w_pistol = 2,
+		w_shotgun = 0, 
+		w_chaingun = 2, 
+		w_rocket_launcher = 4, 
+		w_chainsaw = -2, 
+		w_plasma = 4, 
+		w_bfg = 4, 
+		w_machinegun = 3, 
+		w_grenade = 3
+	}
+	
+	--local treshold = 6
+	local treshold = 4 + weaponRanges[ Aggressive:selectBestWeapon(marine)]
+    local loc = Game.Map:cell_has_los(last_coord.X, last_coord.Y, enemy.Bounds.X, enemy.Bounds.Y, ObstaclesOnly)
+    
+    local res = loc and (movePointsToAttack - #attackPath < treshold)
+    
+    print("attack after move: " .. tostring(res))
+    
+    return res
 end
 
 function Aggressive:areWeReadyToUnload(marine)

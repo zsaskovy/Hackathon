@@ -36,7 +36,8 @@ function Marvin:provide_steps(prev)
 		
 	elseif (strategy == "Aggressive") then
 		print("[" .. marine.Id .. "] I'm at: " .. marine.Bounds.X .. ", " .. marine.Bounds.Y .. " Next move in Aggressive mode")
-        if (Aggressive:areWeReadyToUnload(marine)) then
+        local rnd = math.random()
+        if (Aggressive:areWeReadyToUnload(marine) and rnd > 0.5) then
             Marvin.mode = "unload"
         else
             Marvin.mode = "advance"
