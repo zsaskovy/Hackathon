@@ -1,19 +1,18 @@
 Explorer = class("Explorer", Strategy)
 
+function isPickupType(t)
+	return (MapTools.pickupTypes[t] ~= nil)
+end
+
+function isWeaponType(t)
+	return (MapTools.weaponTypes[t] ~= nil)
+end
+
 function Explorer:getPowerup(c)
-	function isPickupType(t)
-		for i,validType in ipairs(MapTools.pickupTypes) do
-			if t == validType then return true end
-		end
-		return false
-	end
-	
 	local currentEntities = Game.Map:entities_at(c.X, c.Y)
-	if (currentEntities == nil) then 
-		return nil 
-	end
-	for i,e in ipairs(currentEntities) do
-		if (isPickupType(e.type)) then 
+	
+	for i,e in pairs(currentEntities) do
+		if (isPickupType(e.Type)) then 
 			return e
 		end
 	end
@@ -24,10 +23,16 @@ function Explorer:nextMove(marine)
 	--pick up if we're on powerup
 	local currentEntity = Explorer:getPowerup(marine.Bounds)
 	
-	print_r(Game.Map:entities_in(marine.Bounds.X, marine.Bounds.Y,10,10))
+	print_r(currentEntity)
 	if ( currentEntity ~= nil and not Strategy:recentlyVisited(marine.Bounds) ) then
 		print_r(Strategy.recentPositions)
 		Strategy.recentPositions = { marine.Bounds }
+		if (isWeaponType(currentEntity.Type)) then
+			Marvin.weapons[currentEntity.Type] = true
+		end
+		
+		print("Picket up: " .. currentEntity.Type)
+		
 		return { Command = "pickup" }
 	end
 	

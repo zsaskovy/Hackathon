@@ -1,5 +1,6 @@
 Marvin = class( "Marvin", DeathMatchMarine )
 
+Marvin.weapons = {}
 local affinity = "Explorer"
 
 function Marvin:select_mode()
@@ -16,12 +17,15 @@ function Marvin:provide_steps(prev)
 	local command = {}
 	
 	if (strategy == "Explorer") then
+		print("Next move in Explorer mode")
 		command = Explorer:nextMove(marine)
 		
 	elseif (strategy == "Aggressive") then
+		print("Next move in Aggressive mode")
 		command = Aggressive:nextMove(marine)
 		
 	elseif (strategy == "Camper") then
+		print("Next move in Camper mode")
 		command = Camper:nextMove(marine)
 	end
 
