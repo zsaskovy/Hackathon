@@ -19,7 +19,8 @@ function Marvin:provide_steps(prev)
 	local strategy = determineStrategy(marine, affinity)
 	local command = {}
 	
-	if (marine.Health < 2) then
+	if (marine.Health - marine.Wounds < 2) then
+		print("[" .. marine.Id .. "] Next move in Getaway mode")
 		Explorer.priority = "health"
 		Marvin.mode = "sprint"
 		command = Explorer:nextMove(marine)

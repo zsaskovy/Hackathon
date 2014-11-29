@@ -8,6 +8,9 @@
     <DocumentRef FileName=".\Marvin.lua" />
     <DocumentRef FileName=".\Strategy.lua" />
     <DocumentRef FileName=".\DetermineStrategy.lua" />
+    <DocumentRef FileName=".\Aggressive.lua" />
+    <DocumentRef FileName=".\Camper.lua" />
+    <DocumentRef FileName=".\StrategyWeights.lua" />
   </Documents>
   <DocumentGroups />
   <DocumentFolders />
