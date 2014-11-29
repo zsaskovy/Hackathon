@@ -46,8 +46,8 @@ function Aggressive:nextMove(marine)
 	local enemy = Game.Map:get_entity(Aggressive.nextEnemy)
 	print("[" .. marine.Id .. "] Chasing enemy (" .. enemy.Id .. ") at: " .. enemy.Bounds.X .. ", " .. enemy.Bounds.Y)
 	
-	local path = Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
-    --local path = Aggressive:getAttackPath(marine, enemy)
+	--local path = Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
+    local path = Aggressive:getAttackPath(marine, enemy)
     --print_r(path)
     
 	for i,p in ipairs(path) do Strategy:visit(p) end
