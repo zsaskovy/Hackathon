@@ -1,7 +1,6 @@
 Aggressive = class("Aggressive", Strategy)
 
-Aggressive.nextEnemy = nil
-
+Aggressive.nextEnemy = {}
 
 function Aggressive:areWeAtDestination(marine)
 	local weaponRanges = {
@@ -19,9 +18,9 @@ function Aggressive:areWeAtDestination(marine)
 	--local treshold = 6
 	local treshold = 4 + weaponRanges[ Aggressive:selectBestWeapon(marine)]
 	
-	if UnderAttack == nil then return false end
+	if Aggressive.nextEnemy[marine.Id] == nil then return false end
 	
-	local enemy = Game.Map:get_entity(UnderAttack)
+	local enemy = Game.Map:get_entity(Aggressive.nextEnemy[marine.Id])
 	if enemy == nil then return false end
 	local los = Game.Map:entity_has_los(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 	local ap = Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
@@ -36,20 +35,22 @@ function Aggressive:getNextEnemy(marine)
 	local possibleEnemies = MapTools:getNearEnemies(marine.Bounds, nil)
 
 	if (#possibleEnemies > 0) then
-		local r = math.random(1, #possibleEnemies)
-		ret = possibleEnemies[r][1].Id
+		--local r = math.random(1, #possibleEnemies)
+		--ret = possibleEnemies[r][1].Id
+        ret = MapTools:getClosestEnemy(marine, possibleEnemies)
+        return ret.Id
 	end
 	
 	return ret
 end
 
 function Aggressive:nextMove(marine)
-	print("[" .. marine.Id .. "] Enemy name (" .. tostring(UnderAttack) .. ")")
+	print("[" .. marine.Id .. "] Enemy name (" .. tostring(Aggressive.nextEnemy[marine.Id]) .. ")")
 
-	if (UnderAttack == nil) then
-		UnderAttack = Aggressive:getNextEnemy(marine)
+	if (Aggressive.nextEnemy[marine.Id] == nil) then
+		Aggressive.nextEnemy[marine.Id] = Aggressive:getNextEnemy(marine)
 		
-		if (UnderAttack == nil) then
+		if (Aggressive.nextEnemy[marine.Id] == nil) then
 			return Explorer:nextMove(marine)
 		end
 	end
@@ -59,7 +60,7 @@ function Aggressive:nextMove(marine)
 		return Aggressive:attackEnemy(marine)
 	end
 	
-	local enemy = Game.Map:get_entity(UnderAttack)
+	local enemy = Game.Map:get_entity(Aggressive.nextEnemy[marine.Id])
 	if (enemy == nil) then return Explorer:nextMove(marine) end
 	
 	print("[" .. marine.Id .. "] Chasing enemy (" .. enemy.Id .. ") at: " .. enemy.Bounds.X .. ", " .. enemy.Bounds.Y)
@@ -76,7 +77,7 @@ function Aggressive:nextMove(marine)
 end
 
 function Aggressive:areWeReadyToUnload(marine)
-    return marine ~= nil and UnderAttacky ~= nil and Aggressive:areWeAtDestination(marine)
+    return marine ~= nil and Aggressive.nextEnemy[marine.Id] ~= nil and Aggressive:areWeAtDestination(marine)
 end
 
 function Aggressive:getAttackPath(marine, enemy)
@@ -100,7 +101,7 @@ end
 
 function Aggressive:attackEnemy(marine)
 	print("[" .. marine.Id .. "] Attacking enemy")
-	local enemy = Game.Map:get_entity(UnderAttack)
+	local enemy = Game.Map:get_entity(Aggressive.nextEnemy[marine.Id])
 	
 	return { 
 		{ Command = "select_weapon", Weapon = Aggressive:selectBestWeapon(marine) },

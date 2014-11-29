@@ -55,7 +55,7 @@ function determineStrategy(marine, affinity)
 	
 	if (#nearEnemies > 0) then
 		closest = MapTools:getClosestEnemy(marine, nearEnemies)
-		Aggressive.nextEnemy = closest.Id
+		Aggressive.nextEnemy[marine.Id] = closest.Id
 		forcedAttack = true
 	end
 
