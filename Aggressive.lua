@@ -50,6 +50,7 @@ function Aggressive:areWeAtDestination(marine)
 	local los = Game.Map:entity_has_los(marine.Id, Aggressive.nextEnemy.Bounds.X, Aggressive.nextEnemy.Bounds.Y)
 	local ap = Game.Map:get_attack_path(marine.Id, Aggressive.nextEnemy.Bounds.X, Aggressive.nextEnemy.Bounds.Y)
 
+	print("line of sight: " .. tostring(los))
 
 	return (los == true and treshold > #ap)
 end
@@ -93,8 +94,7 @@ function Aggressive:nextMove(marine)
 	end
 	
 	print("[" .. marine.Id .. "] Chasing enemy (" .. Aggressive.nextEnemy.Id .. ") at: " .. Aggressive.nextEnemy.Bounds.X .. ", " .. Aggressive.nextEnemy.Bounds.Y)
-	local path = Game.Map:get_move_path(marine.Id, Aggressive.nextEnemy.Bounds.X, Aggressive.nextEnemy.Bounds.Y)
-	print_r(path)
+	local path = Game.Map:get_attack_path(marine.Id, Aggressive.nextEnemy.Bounds.X, Aggressive.nextEnemy.Bounds.Y)
 	for i,p in ipairs(path) do Strategy:visit(p) end
 	return {
 		{Command= "move", Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount) }
