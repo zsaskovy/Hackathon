@@ -12,10 +12,17 @@ end
 
 
 function Explorer:areWeAtDestination(marine)
-	return (
+	local ret = (
 		Explorer.nextPosition ~= nil 
-		and coord(Explorer.nextPosition.X, Explorer.nextPosition.Y) == coord(marine.Bounds.X,marine.Bounds.Y) 
+		and Explorer.nextPosition.X == marine.Bounds.X
+		and Explorer.nextPosition.Y == marine.Bounds.Y 
 	)
+	if (ret) then print("reached dest")
+	else 
+		print("not reached yet")
+		print_r(Explorer.nextPosition)
+	end
+	return ret
 end
 
 function Explorer:getNextTargetPosition()
@@ -55,16 +62,16 @@ function Explorer:nextMove(marine)
 	end
 	Strategy:visit(coord(marine.Bounds.X, marine.Bounds.Y))
 	]]--
-	
-	
-	math.randomseed(12323131231212312)
 		
 	if (Explorer.nextPosition == nil) then
 		Explorer.nextPosition = Explorer:getNextTargetPosition()
 	end
 	if (Explorer:areWeAtDestination(marine) ) then
 		--we reached our target position, pickup
+		print("REACHED DESTINATION!")
 		Explorer.nextPosition = Explorer:getNextTargetPosition()
+		print("NEXT POSITION")
+		print_r(Explorer.nextPosition)
 		return { Command = "pickup" }
 	end
 	
