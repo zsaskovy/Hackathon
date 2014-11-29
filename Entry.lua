@@ -1,4 +1,5 @@
 Marvins = {}
+UnderAttack = nil
 
 function CreateMarine(player_index, marine_id, instance_index)
 

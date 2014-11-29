@@ -6,9 +6,10 @@ Aggressive.nextEnemy = nil
 function Aggressive:areWeAtDestination(marine)
 	local treshold = 6
 	
-	if Aggressive.nextEnemy == nil then return false end
+	if UnderAttack == nil then return false end
 	
-	local enemy = Game.Map:get_entity(Aggressive.nextEnemy)
+	local enemy = Game.Map:get_entity(UnderAttack)
+	if enemy == nil then return false end
 	local los = Game.Map:entity_has_los(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 	local ap = Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 
@@ -30,10 +31,12 @@ function Aggressive:getNextEnemy(marine)
 end
 
 function Aggressive:nextMove(marine)
-	if (Aggressive.nextEnemy == nil) then
-		Aggressive.nextEnemy = Aggressive:getNextEnemy(marine)
+	print("[" .. marine.Id .. "] Enemy name (" .. tostring(UnderAttack) .. ")")
+
+	if (UnderAttack == nil) then
+		UnderAttack = Aggressive:getNextEnemy(marine)
 		
-		if (Aggressive.nextEnemy == nil) then
+		if (UnderAttack == nil) then
 			return Explorer:nextMove(marine)
 		end
 	end
@@ -43,7 +46,9 @@ function Aggressive:nextMove(marine)
 		return Aggressive:attackEnemy(marine)
 	end
 	
-	local enemy = Game.Map:get_entity(Aggressive.nextEnemy)
+	local enemy = Game.Map:get_entity(UnderAttack)
+	if (enemy == nil) then return Explorer:nextMove(marine) end
+	
 	print("[" .. marine.Id .. "] Chasing enemy (" .. enemy.Id .. ") at: " .. enemy.Bounds.X .. ", " .. enemy.Bounds.Y)
 	
 	--local path = Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
@@ -58,7 +63,7 @@ function Aggressive:nextMove(marine)
 end
 
 function Aggressive:areWeReadyToUnload(marine)
-    return marine ~= nil and Aggressive.nextEnemy ~= nil and Aggressive:areWeAtDestination(marine)
+    return marine ~= nil and UnderAttacky ~= nil and Aggressive:areWeAtDestination(marine)
 end
 
 function Aggressive:getAttackPath(marine, enemy)
@@ -81,7 +86,7 @@ end
 
 function Aggressive:attackEnemy(marine)
 	print("[" .. marine.Id .. "] Attacking enemy")
-	local enemy = Game.Map:get_entity(Aggressive.nextEnemy)
+	local enemy = Game.Map:get_entity(UnderAttack)
 	
 	return { 
 		{ Command = "select_weapon", Weapon = Aggressive:selectBestWeapon(marine) },
