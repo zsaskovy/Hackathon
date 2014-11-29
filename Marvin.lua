@@ -3,6 +3,8 @@ Marvin = class( "Marvin", DeathMatchMarine )
 Marvin.weapons = {}
 local affinity = "Explorer"
 
+math.randomseed(12323132231212312)
+
 function Marvin:select_mode()
 	return "advance"
 end
