@@ -74,6 +74,7 @@ function Aggressive:getAttackPath(marine, enemy)
             local e_x = enemy.Bounds.X + x_i
             local e_y = enemy.Bounds.Y + y_i
             local e_p = Game.Map:get_move_path(marine.Id, e_x, e_y)
+            if (e_p == nil) then e_p = {} end
             if (#e_p > 0 and #e_p < minPathStep) then
                 path = e_p
             end

@@ -156,7 +156,7 @@ end
 
 function MapTools:hasPath(entityId, targetX, targetY)
 	local path = Game.Map:get_move_path(entityId, targetX, targetY)
-	return (#path ~= 0)
+	return (path ~= nil and #path ~= 0)
 end
 
 function MapTools:isEntitySafe(entity)
@@ -165,6 +165,7 @@ end
 
 function MapTools:hasSafePath(entityId, targetX, targetY)
 	local path = Game.Map:get_move_path(entityId, targetX, targetY)
+	if (path == nil) then path = {} end
 	for i=1, #path do
 		local ents = Game.Map:entities_at(path[i].X, path[i].Y)
 		--print("ENTITIES")

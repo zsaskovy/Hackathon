@@ -119,6 +119,7 @@ function Explorer:nextMove(marine)
 	end
 	
 	local path = Game.Map:get_move_path(marine.Id, Explorer.nextPosition[marine.Id].X, Explorer.nextPosition[marine.Id].Y)
+	if (path == nil) then path = {} end
 	
 	--print("PATH FROM " .. marine.Bounds.X .. "," .. marine.Bounds.Y .. " to " .. Explorer.nextPosition[marine.Id].X .. "," .. Explorer.nextPosition[marine.Id].Y)
 	--print_r(path)
