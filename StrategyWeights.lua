@@ -1,8 +1,8 @@
 function strategyWeights(marine)
     local weights = {
-        Explorer =  { HasWeapon = 0.2, EnemyNear = 1, Health=0.7 ,Armor=0.1, CanDodge=0.0, Invisible=0.0, Wounds=0.2, AttackPoints=0.1, Accuracy=0.0, Deadly=0.0, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.0, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 },
+        Explorer =  { HasWeapon = 0.2, EnemyNear = 1, Health=0.7 ,Armor=0.1, CanDodge=0.0, Invisible=0.0, Wounds=0.7, AttackPoints=0.1, Accuracy=0.0, Deadly=0.0, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.0, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 },
         Camper =    { HasWeapon = 0.1, EnemyNear = 1, Health=0.0, Armor=0.0, CanDodge=0.0, Invisible=0.0, Wounds=0.0, AttackPoints=0.0, Accuracy=0.0, Deadly=0.0, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.0, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 },
-        Aggressive ={ HasWeapon = 0.8, EnemyNear = 1, Health=0.1, Armor=0.9, CanDodge=0.0, Invisible=3.0, Wounds=0.1, AttackPoints=0.9, Accuracy=0.0, Deadly=0.9, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.9, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 }
+        Aggressive ={ HasWeapon = 0.8, EnemyNear = 1.5, Health=0.1, Armor=0.9, CanDodge=0.0, Invisible=3.0, Wounds=0.1, AttackPoints=0.9, Accuracy=0.0, Deadly=0.9, MaxRange=0.0, IgnoresSight=0.0, IgnoresFailedDices=0.0, CanDoAimed=0.0, AttackCount=0.9, MovePoints=0.0, IgnoresCollisions=0.0, MoveCount=0.0 }
     }
     
     local values = { Explorer = 0.0, Camper = 0.0, Aggressive = 0.0 }
@@ -26,13 +26,13 @@ function strategyWeights(marine)
 						end
 					end
 					
-					marine_value = math.abs(7-distance) * 2
+					marine_value = math.abs(12-distance) * 2
 				else
 					marine_value = 1
 				end
 				
-				print("marine value: " .. marine_value)
-
+--				print("marine value: " .. marine_value)
+--
 			elseif (key == "Invisible" or key == "CanDodge" or key == "IgnoresFailedDices" or key == "IgnoresSight" or key == "CanDoAimed" or key == "IgnoresCollisions") then
 				if (marine[key] == true) then
 					marine_value = 1
@@ -44,7 +44,9 @@ function strategyWeights(marine)
 			end
 
 			if (marine_value ~= nil) then 
-				--print(w_key .. "/" .. key .. " -> " .. (value * marine_value))
+				if (value * marine_value > 0) then
+					print(w_key .. "/" .. key .. " -> " .. (value * marine_value))
+				end
 				values[w_key] = values[w_key] + (value * marine_value)
 			end
 		end
