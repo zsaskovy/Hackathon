@@ -47,12 +47,35 @@ function Aggressive:nextMove(marine)
 	print("[" .. marine.Id .. "] Chasing enemy (" .. enemy.Id .. ") at: " .. enemy.Bounds.X .. ", " .. enemy.Bounds.Y)
 	
 	local path = Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
-
+    --local path = Aggressive:getAttackPath(marine, enemy)
+    --print_r(path)
+    
 	for i,p in ipairs(path) do Strategy:visit(p) end
 	return {
 		{Command= "move", Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount) }
 	}
 
+end
+
+function Aggressive:getAttackPath(marine, enemy)
+    local path = nil
+    local minPathStep = 99999
+    for x_i = -1,1,1 do
+        for y_i = -1,1,1 do
+            local e_x = enemy.Bounds.X + x_i
+            local e_y = enemy.Bounds.Y + y_i
+            local e_p = Game.Map:get_move_path(marine.Id, e_x, e_y)
+            if (#e_p > 0 and #e_p < minPathStep) then
+                path = e_p
+            end
+        end
+    end
+--    local path = Game.Map:get_move_path(marine.Id, 1000, 1000)
+--    print("++++++++++++++")
+--    print_r(path)
+--    print("--------------")
+    return path
+--    return Game.Map:get_attack_path(marine.Id, enemy.Bounds.X, enemy.Bounds.Y)
 end
 
 function Aggressive:attackEnemy(marine)
