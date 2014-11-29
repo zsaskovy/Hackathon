@@ -17,11 +17,7 @@ function Explorer:areWeAtDestination(marine)
 		and Explorer.nextPosition.X == marine.Bounds.X
 		and Explorer.nextPosition.Y == marine.Bounds.Y 
 	)
-	if (ret) then print("reached dest")
-	else 
-		print("not reached yet")
-		print_r(Explorer.nextPosition)
-	end
+
 	return ret
 end
 
@@ -44,9 +40,6 @@ function Explorer:getNextTargetPosition()
 	return coord(possibleNextItem.Bounds.X, possibleNextItem.Bounds.Y)
 end
 
-
-
-
 function Explorer:nextMove(marine)
 	--[[pick up if we're on powerup
 	local currentEntity = Explorer:getPowerup(marine.Bounds)
@@ -68,18 +61,15 @@ function Explorer:nextMove(marine)
 	end
 	if (Explorer:areWeAtDestination(marine) ) then
 		--we reached our target position, pickup
-		print("REACHED DESTINATION!")
 		Explorer.nextPosition = Explorer:getNextTargetPosition()
-		print("NEXT POSITION")
-		print_r(Explorer.nextPosition)
-		return { Command = "pickup" }
+		print("Picking up item:")
+		return { { Command = "pickup" } }
 	end
 	
 	local path = Game.Map:get_move_path(marine.Id, Explorer.nextPosition.X, Explorer.nextPosition.Y)
 	for i,p in ipairs(path) do Strategy:visit(p) end
 	return {
-		Command= "move",
-		Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount)
+		{Command= "move", Path= TableFirstNElements(path, marine.MovePoints - marine.MoveCount) }
 	}
 
 end
