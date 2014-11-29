@@ -133,7 +133,7 @@ function MapTools:getNearEnemies(coord, maxDistance)
 
 	local ret = {}
 	
-	local valid_types = { spawn_player = true }
+	local valid_types = { marine = true }
 	
 	if (stuff == nil) then return ret end
 	

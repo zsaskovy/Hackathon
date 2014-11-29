@@ -24,3 +24,11 @@ end
 function Strategy:nextMove(marine)
 	return { Command = "done" }
 end
+
+function Strategy:isPickupType(t)
+	return (MapTools.pickupTypes[t] ~= nil)
+end
+
+function Strategy:isWeaponType(t)
+	return (MapTools.weaponTypes[t] ~= nil)
+end
