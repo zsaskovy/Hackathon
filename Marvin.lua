@@ -33,9 +33,9 @@ function Marvin:provide_steps(prev)
 	end
 
 	--print_r(command)
-	return { 
+	return 
 		command
 		--,{ Command = "done" } 
-	}
+	
 end
 
